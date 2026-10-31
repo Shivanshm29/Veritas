@@ -1,6 +1,6 @@
 # Veritas — Multimodal Deepfake Detection & Claim Verification Network
 
-> **Project:** Veritas / PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Phase:** Phase 1 — Data Ingestion & Evidence Asset Management (Active Feature Branch)  
 > **GitHub Repository:** [https://github.com/Shivanshm29/Veritas.git](https://github.com/Shivanshm29/Veritas.git)  
 > **Default Branch:** `main`  
@@ -10,7 +10,7 @@
 
 ## 1. What Veritas Is & Purpose of the Project
 
-**Veritas** (architecturally designated as **PRAMAAN**) is an asynchronous, contract-first multimodal intelligence and verification platform engineered to:
+**Veritas** is an asynchronous, contract-first multimodal intelligence and verification platform engineered to:
 1. **Detect synthetic media manipulation:** Identify deepfakes, synthetic faces, audio voice clones, and AI-generated diffusion artifacts across video, audio, and images.
 2. **Verify factual assertions:** Extract claims from multimedia content, retrieve corroborated ground-truth evidence from trusted sources, and generate explainable factual assessments.
 3. **Trace media provenance:** Build cross-modal provenance graphs tracking asset transformations, derivation lineages, and multi-hop dissemination patterns.

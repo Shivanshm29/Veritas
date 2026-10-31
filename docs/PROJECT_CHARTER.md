@@ -1,6 +1,6 @@
 # Veritas — Project Charter
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** Project Charter & Operational Mandate  
 > **Classification:** Open Architecture / Forensic Standards  
 > **Target Delivery:** High-Trust Multimodal Digital Authenticity & Claim Verification  

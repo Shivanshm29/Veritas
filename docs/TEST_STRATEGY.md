@@ -1,6 +1,6 @@
 # Veritas — Test Strategy & Verification Protocol
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** Test Strategy, Verification Gates & Quality Assurance Standards  
 > **Target:** 100% Deterministic, Decoupled, Multi-Dimensional Testing  
 

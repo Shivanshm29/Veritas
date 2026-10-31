@@ -1,6 +1,6 @@
 # Veritas — Phase 1 Review: Data Ingestion & Evidence Asset Management
 
-**Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Phase:** Phase 1 — Data Ingestion & Evidence Asset Management  
 **Subsystem:** Person 1 (Content Ingestion & Evidence Asset Management)  
 **Date:** October 31, 2026  
@@ -8,7 +8,7 @@
 **Document Path:** `reviews/phase-1-review.md`  
 **Git Branch:** `feature/phase-1-data-ingestion`  
 **Remote Repository:** `https://github.com/Shivanshm29/Veritas.git`  
-**Compatibility Note:** Preserved `PramaanBaseModel` and `PramaanException` as aliases to maintain backward compatibility across shared contracts and existing modules.
+**Legacy Compatibility Note:** `PramaanBaseModel` and `PramaanException` are preserved strictly as legacy aliases for backward compatibility with existing contract consumers; they do not represent the project's official identity.
 
 ---
 
@@ -286,7 +286,7 @@ Claims reflect specific automated test assertions, distinguishing targeted test 
 | **Orphaned Storage Leak** | Disk leaks unlinked storage files | Transactional catch hook calls `storage.delete(uri)` upon database commit failure | **Targeted Test Passed** (`test_storage_rollback_when_db_commit_fails`) |
 | **SSRF** | Server fetches malicious external URL | No URL fetching endpoint implemented in Phase 1 (strictly multipart file uploads) | **Scope Boundary Maintained** (No network egress surface introduced) |
 | **Sensitive Path Leak** | Server file paths exposed in errors | Error handling uses RFC 9457 Problem Details with sanitized messages | **Targeted Test Passed** (`test_error_response_does_not_leak_internal_paths`) |
-| **Access Control** | Unauthorized asset upload / inspection | Endpoints are currently open; authorization deferred to security roadmap | **Outstanding Limitation** (UUID unguessability is NOT access control) |
+| **Access Control** | Unauthorized asset upload / inspection | Endpoints are unauthenticated; suitable strictly for local/isolated testing until Phase 11 controls are added | **Outstanding Limitation** (UUID unguessability is NOT access control) |
 
 ---
 

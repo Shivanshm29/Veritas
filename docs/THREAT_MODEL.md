@@ -1,6 +1,6 @@
 # Veritas — Threat Model & Security Architecture
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** Threat Model, Attack Surface Analysis & Mitigation Strategy  
 > **Standard:** STRIDE Framework & OWASP Top 10 API Security Risks  
 

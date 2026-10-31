@@ -1,6 +1,6 @@
 # Veritas — API & Contract Conventions
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** API Design Standards, Serialization Conventions & Wire Protocol  
 > **Compliance Standard:** RFC 9457 (Problem Details), ISO 8601 (Time), SemVer 2.0 (Versioning)  
 > **Backward Compatibility Note:** Technical identifiers such as `PramaanBaseModel` and `PramaanException` are preserved as aliases for backward compatibility.  

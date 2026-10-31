@@ -1,6 +1,6 @@
 # Veritas — Data Governance & Privacy Policy
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** Data Governance, Evidence Retention, Privacy & Compliance Policy  
 > **Classification:** Digital Forensics Chain of Custody & Privacy Protection  
 

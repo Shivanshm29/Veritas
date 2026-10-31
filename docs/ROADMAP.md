@@ -1,6 +1,6 @@
 # Veritas — Project Roadmap (Phase 0 – Phase 13)
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** Fixed System Roadmap & Ownership Matrix  
 > **Status:** Approved & Frozen Baseline  
 

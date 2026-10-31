@@ -1,9 +1,9 @@
 # Veritas — Shared Data Contracts (v1.0.0)
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Directory:** `contracts/`  
 > **Purpose:** Canonical, Machine-Readable Schemas & Fixtures for Decoupled Multi-Developer Systems  
-> **Compatibility Note:** `VeritasBaseModel` is the canonical base class; `PramaanBaseModel` is preserved as an alias for backward compatibility.  
+> **Legacy Compatibility Note:** `VeritasBaseModel` is the canonical base class; `PramaanBaseModel` is preserved strictly as a legacy alias for backward compatibility with existing contract consumers; it does not represent the project's official identity.  
 
 ---
 

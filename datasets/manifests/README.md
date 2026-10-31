@@ -1,6 +1,6 @@
 # Veritas — Dataset Manifests
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Directory:** `datasets/manifests/`  
 > **Purpose:** Versioned Metadata Manifests for Evaluation Datasets  
 

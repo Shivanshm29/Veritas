@@ -1,6 +1,6 @@
 # Veritas — System Architecture Specification
 
-> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 > **Document:** System Architecture & Technical Design Specification  
 > **Focus:** Person 1 Backend Architecture & Cross-System Integration  
 > **Version:** 1.0.0  

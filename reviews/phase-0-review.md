@@ -1,12 +1,12 @@
 # Veritas — Phase 0 Review: Project Foundation & Architecture
 
-**Project:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Phase:** Phase 0 — Project Foundation & Architecture  
 **Subsystem:** Person 1 (Backend Core, Shared Contracts, Ingestion & Verification Foundation)  
 **Date:** October 31, 2026  
 **Auditor / Engineer:** Senior Software Architect, Python Backend Engineer, API Engineer & QA Engineer  
 **Document Path:** `reviews/phase-0-review.md`  
-**Compatibility Note:** Preserved `PramaanBaseModel` and `PramaanException` as aliases to maintain backward compatibility.  
+**Legacy Compatibility Note:** `PramaanBaseModel` and `PramaanException` are preserved strictly as legacy aliases for backward compatibility with existing contract consumers; they do not represent the project's official identity.
 
 ---
 
