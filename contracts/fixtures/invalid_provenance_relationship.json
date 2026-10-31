@@ -1,0 +1,12 @@
+{
+  "id": "rel_01234567-0123-4123-8123-012345678345",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "source_node_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "source_node_type": "ASSET",
+  "target_node_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "target_node_type": "ASSET",
+  "relationship_type": "DERIVED_FROM",
+  "confidence": 0.9,
+  "created_at": "2026-10-31T06:13:00.000000Z"
+}
+

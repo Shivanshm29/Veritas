@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "ProvenanceNodeType": {
+      "enum": [
+        "ASSET",
+        "CLAIM",
+        "SOURCE_DOCUMENT",
+        "FORENSIC_FINDING",
+        "ENTITY"
+      ],
+      "title": "ProvenanceNodeType",
+      "type": "string"
+    },
+    "ProvenanceRelationshipType": {
+      "enum": [
+        "DERIVED_FROM",
+        "CONTRADICTS",
+        "SUPPORTS",
+        "EXTRACTED_FROM",
+        "CORROBORATED_BY",
+        "DUPLICATE_OF",
+        "SHARES_PERCEPTUAL_HASH"
+      ],
+      "title": "ProvenanceRelationshipType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 10: Directed relationship edge in the provenance graph.",
+  "properties": {
+    "id": {
+      "description": "ID with format rel_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "source_node_id": {
+      "title": "Source Node Id",
+      "type": "string"
+    },
+    "source_node_type": {
+      "$ref": "#/$defs/ProvenanceNodeType"
+    },
+    "target_node_id": {
+      "title": "Target Node Id",
+      "type": "string"
+    },
+    "target_node_type": {
+      "$ref": "#/$defs/ProvenanceNodeType"
+    },
+    "relationship_type": {
+      "$ref": "#/$defs/ProvenanceRelationshipType"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "evidence_citation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Evidence Citation Id"
+    },
+    "edge_weight": {
+      "default": 1.0,
+      "minimum": 0.0,
+      "title": "Edge Weight",
+      "type": "number"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "source_node_id",
+    "source_node_type",
+    "target_node_id",
+    "target_node_type",
+    "relationship_type",
+    "confidence",
+    "created_at"
+  ],
+  "title": "ProvenanceRelationship",
+  "type": "object"
+}

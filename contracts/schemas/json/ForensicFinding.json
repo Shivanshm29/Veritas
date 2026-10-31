@@ -1,0 +1,214 @@
+{
+  "$defs": {
+    "CalibrationStatus": {
+      "enum": [
+        "UNCALIBRATED",
+        "CALIBRATED",
+        "NOT_APPLICABLE"
+      ],
+      "title": "CalibrationStatus",
+      "type": "string"
+    },
+    "ForensicModality": {
+      "enum": [
+        "IMAGE",
+        "VIDEO",
+        "AUDIO"
+      ],
+      "title": "ForensicModality",
+      "type": "string"
+    },
+    "ForensicVerdict": {
+      "enum": [
+        "LIKELY_SYNTHETIC",
+        "LIKELY_AUTHENTIC",
+        "INCONCLUSIVE"
+      ],
+      "title": "ForensicVerdict",
+      "type": "string"
+    },
+    "RawScoreType": {
+      "enum": [
+        "UNNORMALIZED_LOGIT",
+        "ANOMALY_INDEX",
+        "SIMILARITY",
+        "DISTANCE",
+        "NORMALIZED_BOUNDED",
+        "OTHER"
+      ],
+      "title": "RawScoreType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 9: Signal manipulation detection finding from Person 2's forensic engines.",
+  "properties": {
+    "id": {
+      "description": "ID with format fnd_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "asset_id": {
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "modality": {
+      "$ref": "#/$defs/ForensicModality"
+    },
+    "technique": {
+      "minLength": 1,
+      "title": "Technique",
+      "type": "string"
+    },
+    "raw_score": {
+      "description": "Raw quantitative score directly output by detector.",
+      "title": "Raw Score",
+      "type": "number"
+    },
+    "raw_score_type": {
+      "$ref": "#/$defs/RawScoreType",
+      "default": "UNNORMALIZED_LOGIT",
+      "description": "Type and scale of raw detector score (UNNORMALIZED_LOGIT, ANOMALY_INDEX, SIMILARITY, DISTANCE, NORMALIZED_BOUNDED, OTHER)."
+    },
+    "calibration_status": {
+      "$ref": "#/$defs/CalibrationStatus",
+      "default": "UNCALIBRATED",
+      "description": "Explicit calibration status of the finding score."
+    },
+    "calibrated_score": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Empirically calibrated probability in [0.0, 1.0], populated ONLY if formal calibration was performed.",
+      "title": "Calibrated Score"
+    },
+    "calibration_method": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Method used for calibration (e.g. TEMPERATURE_SCALING, PLATT_SCALING, ISOTONIC_REGRESSION).",
+      "title": "Calibration Method"
+    },
+    "calibration_metadata": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Supporting empirical calibration metrics (e.g. calibration dataset ID, ECE, Brier score).",
+      "title": "Calibration Metadata"
+    },
+    "verdict": {
+      "$ref": "#/$defs/ForensicVerdict"
+    },
+    "score_interpretation": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Investigator-facing explanation of raw/calibrated score interpretation and thresholds.",
+      "title": "Score Interpretation"
+    },
+    "region_of_interest": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Region Of Interest"
+    },
+    "heatmap_artifact_uri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Heatmap Artifact Uri"
+    },
+    "detected_artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Detected Artifacts",
+      "type": "array"
+    },
+    "limitations_notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Documented detector and operational limitations affecting finding accuracy.",
+      "title": "Limitations Notes"
+    },
+    "model_name": {
+      "minLength": 1,
+      "title": "Model Name",
+      "type": "string"
+    },
+    "model_version": {
+      "minLength": 1,
+      "title": "Model Version",
+      "type": "string"
+    },
+    "executed_at": {
+      "format": "date-time",
+      "title": "Executed At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "asset_id",
+    "modality",
+    "technique",
+    "raw_score",
+    "verdict",
+    "model_name",
+    "model_version",
+    "executed_at"
+  ],
+  "title": "ForensicFinding",
+  "type": "object"
+}

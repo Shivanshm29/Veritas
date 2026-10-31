@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "AssetStatus": {
+      "enum": [
+        "INGESTED",
+        "STORED",
+        "QUARANTINED",
+        "FAILED"
+      ],
+      "title": "AssetStatus",
+      "type": "string"
+    },
+    "C2PAStatus": {
+      "enum": [
+        "VALID",
+        "INVALID",
+        "ABSENT",
+        "UNSUPPORTED"
+      ],
+      "title": "C2PAStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 2: Primary immutable evidence file.",
+  "properties": {
+    "id": {
+      "description": "ID with format ast_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "original_filename": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Original Filename",
+      "type": "string"
+    },
+    "file_size_bytes": {
+      "exclusiveMinimum": 0,
+      "title": "File Size Bytes",
+      "type": "integer"
+    },
+    "mime_type": {
+      "pattern": "^[a-z]+/[a-z0-9\\.\\+-]+$",
+      "title": "Mime Type",
+      "type": "string"
+    },
+    "sha256_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Sha256 Hash",
+      "type": "string"
+    },
+    "storage_uri": {
+      "minLength": 5,
+      "title": "Storage Uri",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "source_platform": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Platform"
+    },
+    "captured_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Captured At"
+    },
+    "c2pa_manifest_present": {
+      "default": false,
+      "title": "C2Pa Manifest Present",
+      "type": "boolean"
+    },
+    "c2pa_status": {
+      "$ref": "#/$defs/C2PAStatus",
+      "default": "ABSENT"
+    },
+    "status": {
+      "$ref": "#/$defs/AssetStatus",
+      "default": "INGESTED"
+    },
+    "quarantine_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Quarantine Reason"
+    },
+    "uploaded_at": {
+      "format": "date-time",
+      "title": "Uploaded At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "original_filename",
+    "file_size_bytes",
+    "mime_type",
+    "sha256_hash",
+    "storage_uri",
+    "uploaded_at"
+  ],
+  "title": "EvidenceAsset",
+  "type": "object"
+}

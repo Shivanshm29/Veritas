@@ -1,0 +1,19 @@
+{
+  "id": "rpt_12345678-90ab-4cde-8f01-23456789abcd",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "version": 1,
+  "report_status": "FINAL",
+  "executive_summary": "[SYNTHETIC FIXTURE] Comprehensive analysis of synthetic briefing media demonstrates significant facial reenactment manipulation and contradicted subsidy cancellation claims.",
+  "overall_media_authenticity": "SYNTHETIC_ELEMENTS_DETECTED",
+  "overall_claim_validity": "MOSTLY_FALSE",
+  "included_finding_ids": ["fnd_90123456-9012-4012-8012-901234567234"],
+  "included_assessment_ids": ["asm_89012345-8901-4901-8901-890123456123"],
+  "disclaimers": [
+    "[SYNTHETIC FIXTURE] Forensic model outputs represent statistical anomaly scores.",
+    "[SYNTHETIC FIXTURE] C2PA provenance manifest was absent, which does not prove intentional manipulation."
+  ],
+  "lead_investigator_id": "inv_agent_04",
+  "exported_pdf_uri": "file:///var/pramaan/reports/rpt_12345678_v1.pdf",
+  "generated_at": "2026-10-31T06:14:00.000000Z"
+}
+

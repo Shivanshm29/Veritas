@@ -1,0 +1,15 @@
+{
+  "id": "fnd_90123456-9012-4012-8012-901234567234",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "asset_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "modality": "VIDEO",
+  "technique": "SPECTRAL_ANALYSIS",
+  "raw_score": 14.5,
+  "raw_score_type": "UNNORMALIZED_LOGIT",
+  "calibration_status": "CALIBRATED",
+  "calibrated_score": 1.45,
+  "verdict": "LIKELY_SYNTHETIC",
+  "model_name": "DeepFakeDetector",
+  "model_version": "1.0",
+  "executed_at": "2026-10-31T06:12:30.000000Z"
+}

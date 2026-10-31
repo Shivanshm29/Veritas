@@ -1,0 +1,28 @@
+{
+  "id": "fnd_90123456-9012-4012-8012-901234567234",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "asset_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "modality": "VIDEO",
+  "technique": "FACIAL_REENACTMENT_TEMPORAL_FLICKER",
+  "raw_score": 3.84,
+  "raw_score_type": "UNNORMALIZED_LOGIT",
+  "calibration_status": "UNCALIBRATED",
+  "calibrated_score": null,
+  "calibration_method": null,
+  "calibration_metadata": {},
+  "verdict": "LIKELY_SYNTHETIC",
+  "score_interpretation": "[SYNTHETIC FIXTURE] Logit score 3.84 exceeds decision threshold 2.0 based on inter-frame perioral landmark phase jitter; uncalibrated raw detector output.",
+  "region_of_interest": {
+    "timecode_range_ms": [800, 2400],
+    "bounding_box": [0.35, 0.2, 0.3, 0.45]
+  },
+  "heatmap_artifact_uri": "file:///var/pramaan/heatmaps/fnd_90123456.png",
+  "detected_artifacts": [
+    "Perioral boundary blending inconsistency",
+    "Inter-frame eye landmark phase jitter"
+  ],
+  "limitations_notes": "[SYNTHETIC FIXTURE] Input video exhibited compression artifacts; detector uncalibrated on low bit-rate H.264 streams.",
+  "model_name": "DeepFake-TemporalSyncNet",
+  "model_version": "v1.4.2",
+  "executed_at": "2026-10-31T06:12:30.000000Z"
+}

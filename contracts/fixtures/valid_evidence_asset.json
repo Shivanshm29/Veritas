@@ -1,0 +1,18 @@
+{
+  "id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "original_filename": "[SYNTHETIC FIXTURE] press_briefing_leak.mp4",
+  "file_size_bytes": 15420800,
+  "mime_type": "video/mp4",
+  "sha256_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "storage_uri": "file:///var/pramaan/storage/ast_23456789-2345-4345-8345-234567890bcd.mp4",
+  "source_url": "https://example.com/videos/synthetic_briefing.mp4",
+  "source_platform": "web_download",
+  "captured_at": "2026-10-31T05:30:00.000000Z",
+  "c2pa_manifest_present": false,
+  "c2pa_status": "ABSENT",
+  "status": "STORED",
+  "quarantine_reason": null,
+  "uploaded_at": "2026-10-31T06:05:00.000000Z"
+}
+

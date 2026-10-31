@@ -1,0 +1,79 @@
+{
+  "$defs": {
+    "DerivationType": {
+      "enum": [
+        "VIDEO_AUDIO_EXTRACTION",
+        "VIDEO_KEYFRAME",
+        "IMAGE_FACE_CROP",
+        "AUDIO_SEGMENT",
+        "SPECTROGRAM",
+        "TEXT_TRANSCRIPTION"
+      ],
+      "title": "DerivationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 3: Records derived child assets (keyframes, audio tracks).",
+  "properties": {
+    "id": {
+      "description": "ID with format drv_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "parent_asset_id": {
+      "title": "Parent Asset Id",
+      "type": "string"
+    },
+    "derived_asset_id": {
+      "title": "Derived Asset Id",
+      "type": "string"
+    },
+    "derivation_type": {
+      "$ref": "#/$defs/DerivationType"
+    },
+    "derivation_parameters": {
+      "additionalProperties": true,
+      "title": "Derivation Parameters",
+      "type": "object"
+    },
+    "operator_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Operator Id"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "parent_asset_id",
+    "derived_asset_id",
+    "derivation_type",
+    "created_at"
+  ],
+  "title": "AssetDerivation",
+  "type": "object"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "inv_12345678-1234-4234-8234-123456789abc",
+  "title": "[SYNTHETIC FIXTURE] Viral Campaign Leak #402",
+  "description": "[SYNTHETIC FIXTURE] Multi-modal analysis of suspected generative voice cloning and manipulated footage.",
+  "status": "IN_PROGRESS",
+  "priority": "HIGH",
+  "tags": ["synthetic_speech", "election_2026", "deepfake", "synthetic_fixture"],
+  "created_by": "analyst_agent_01",
+  "created_at": "2026-10-31T06:00:00.000000Z",
+  "updated_at": "2026-10-31T06:15:00.000000Z",
+  "closed_at": null,
+  "metadata": {
+    "is_synthetic_fixture": true,
+    "jurisdiction": "National",
+    "case_code": "CASE-2026-X8"
+  }
+}

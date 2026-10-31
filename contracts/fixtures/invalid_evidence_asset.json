@@ -1,0 +1,11 @@
+{
+  "id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "original_filename": "corrupted_asset.mp4",
+  "file_size_bytes": -500,
+  "mime_type": "invalid/mime!type",
+  "sha256_hash": "not_a_hex_hash_at_all",
+  "storage_uri": "invalid_scheme://path/file.mp4",
+  "uploaded_at": "2026-10-31T06:05:00.000000Z"
+}
+

@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "ClaimCategory": {
+      "enum": [
+        "POLITICAL",
+        "FINANCIAL",
+        "PUBLIC_HEALTH",
+        "DISASTER",
+        "CELEBRITY_IDENTITY",
+        "GENERAL"
+      ],
+      "title": "ClaimCategory",
+      "type": "string"
+    },
+    "ClaimModalityOrigin": {
+      "enum": [
+        "TRANSCRIPT",
+        "OCR",
+        "USER_PROMPT",
+        "EXTERNAL_POST"
+      ],
+      "title": "ClaimModalityOrigin",
+      "type": "string"
+    },
+    "ClaimStatus": {
+      "enum": [
+        "EXTRACTED",
+        "PENDING_VERIFICATION",
+        "VERIFIED",
+        "UNVERIFIABLE"
+      ],
+      "title": "ClaimStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 5: Verifiable factual assertion extracted from media.",
+  "properties": {
+    "id": {
+      "description": "ID with format clm_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "source_asset_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Asset Id"
+    },
+    "claim_text": {
+      "maxLength": 2000,
+      "minLength": 5,
+      "title": "Claim Text",
+      "type": "string"
+    },
+    "modality_origin": {
+      "$ref": "#/$defs/ClaimModalityOrigin"
+    },
+    "extraction_confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Extraction Confidence",
+      "type": "number"
+    },
+    "source_timecode_start_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Timecode Start Ms"
+    },
+    "source_timecode_end_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Timecode End Ms"
+    },
+    "speaker_tag": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Speaker Tag"
+    },
+    "claim_entities": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Claim Entities",
+      "type": "array"
+    },
+    "category": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ClaimCategory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status": {
+      "$ref": "#/$defs/ClaimStatus",
+      "default": "EXTRACTED"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "claim_text",
+    "modality_origin",
+    "extraction_confidence",
+    "created_at"
+  ],
+  "title": "Claim",
+  "type": "object"
+}

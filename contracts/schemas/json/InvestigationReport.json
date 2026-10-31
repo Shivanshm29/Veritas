@@ -1,0 +1,121 @@
+{
+  "$defs": {
+    "OverallClaimValidity": {
+      "enum": [
+        "MOSTLY_TRUE",
+        "MOSTLY_FALSE",
+        "MIXED",
+        "UNVERIFIABLE"
+      ],
+      "title": "OverallClaimValidity",
+      "type": "string"
+    },
+    "OverallMediaAuthenticity": {
+      "enum": [
+        "LIKELY_AUTHENTIC",
+        "LIKELY_MANIPULATED",
+        "SYNTHETIC_ELEMENTS_DETECTED",
+        "INCONCLUSIVE"
+      ],
+      "title": "OverallMediaAuthenticity",
+      "type": "string"
+    },
+    "ReportStatus": {
+      "enum": [
+        "DRAFT",
+        "FINAL",
+        "SUPERSEDED"
+      ],
+      "title": "ReportStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 11: Final structured investigative report.",
+  "properties": {
+    "id": {
+      "description": "ID with format rpt_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "report_status": {
+      "$ref": "#/$defs/ReportStatus",
+      "default": "DRAFT"
+    },
+    "executive_summary": {
+      "minLength": 50,
+      "title": "Executive Summary",
+      "type": "string"
+    },
+    "overall_media_authenticity": {
+      "$ref": "#/$defs/OverallMediaAuthenticity"
+    },
+    "overall_claim_validity": {
+      "$ref": "#/$defs/OverallClaimValidity"
+    },
+    "included_finding_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Included Finding Ids",
+      "type": "array"
+    },
+    "included_assessment_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Included Assessment Ids",
+      "type": "array"
+    },
+    "disclaimers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Disclaimers",
+      "type": "array"
+    },
+    "lead_investigator_id": {
+      "minLength": 1,
+      "title": "Lead Investigator Id",
+      "type": "string"
+    },
+    "exported_pdf_uri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exported Pdf Uri"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "version",
+    "executive_summary",
+    "overall_media_authenticity",
+    "overall_claim_validity",
+    "lead_investigator_id",
+    "generated_at"
+  ],
+  "title": "InvestigationReport",
+  "type": "object"
+}

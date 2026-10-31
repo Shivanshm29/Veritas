@@ -1,0 +1,9 @@
+{
+  "id": "adt_23456789-01bc-4def-9012-3456789abcde",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "event_type": "UNKNOWN_AUDIT_ACTION",
+  "actor_id": "worker_01",
+  "action_details": {},
+  "timestamp": "2026-10-31T06:12:35.000000Z"
+}
+

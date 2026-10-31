@@ -1,0 +1,10 @@
+{
+  "id": "evi_78901234-7890-4890-8890-789012345012",
+  "claim_id": "clm_56789012-5678-4678-8678-567890123ef0",
+  "source_document_id": "doc_67890123-6789-4789-8789-678901234f01",
+  "evidence_text": "[SYNTHETIC FIXTURE] Short evidence text",
+  "stance": "TOTALLY_AGREES_ENUM_ERROR",
+  "relevance_score": -0.5,
+  "created_at": "2026-10-31T06:10:05.000000Z"
+}
+

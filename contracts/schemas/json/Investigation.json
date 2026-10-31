@@ -1,0 +1,111 @@
+{
+  "$defs": {
+    "InvestigationStatus": {
+      "enum": [
+        "CREATED",
+        "IN_PROGRESS",
+        "ANALYSIS_COMPLETE",
+        "REPORTED",
+        "ARCHIVED",
+        "FAILED"
+      ],
+      "title": "InvestigationStatus",
+      "type": "string"
+    },
+    "PriorityLevel": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "title": "PriorityLevel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 1: Top-level investigation grouping evidence and claims.",
+  "properties": {
+    "id": {
+      "description": "ID with format inv_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 255,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "maxLength": 5000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "status": {
+      "$ref": "#/$defs/InvestigationStatus",
+      "default": "CREATED"
+    },
+    "priority": {
+      "$ref": "#/$defs/PriorityLevel",
+      "default": "MEDIUM"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "created_by": {
+      "minLength": 1,
+      "title": "Created By",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "closed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Closed At"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "created_by",
+    "created_at",
+    "updated_at"
+  ],
+  "title": "Investigation",
+  "type": "object"
+}

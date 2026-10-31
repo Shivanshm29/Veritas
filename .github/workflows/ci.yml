@@ -1,0 +1,36 @@
+name: PRAMAAN Backend & Contract CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-and-verify:
+    name: Lint, Test & Contract Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test] || pip install pytest pytest-asyncio httpx fastapi pydantic pydantic-settings sqlalchemy alembic
+
+      - name: Verify Contract Schema Export
+        run: |
+          python scripts/export_schemas.py
+
+      - name: Run Phase 0 Pytest Battery
+        run: |
+          pytest tests backend/tests workers/tests -v --durations=10
+

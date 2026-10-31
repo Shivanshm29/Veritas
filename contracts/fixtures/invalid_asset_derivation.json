@@ -1,0 +1,9 @@
+{
+  "id": "drv_34567890-3456-4456-8456-345678901cde",
+  "parent_asset_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "derived_asset_id": "ast_23456789-2345-4345-8345-234567890bcd",
+  "derivation_type": "VIDEO_KEYFRAME",
+  "derivation_parameters": {},
+  "created_at": "2026-10-31T06:06:12.000000Z"
+}
+

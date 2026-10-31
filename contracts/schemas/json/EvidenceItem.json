@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "EvidenceStance": {
+      "enum": [
+        "SUPPORTS",
+        "REFUTES",
+        "NEUTRAL",
+        "INSUFFICIENT"
+      ],
+      "title": "EvidenceStance",
+      "type": "string"
+    },
+    "RetrievalMethod": {
+      "enum": [
+        "BM25",
+        "VECTOR_KNN",
+        "HYBRID_RRF",
+        "MANUAL"
+      ],
+      "title": "RetrievalMethod",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 7: Specific passage from a source document evaluated against a claim.",
+  "properties": {
+    "id": {
+      "description": "ID with format evi_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "claim_id": {
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "source_document_id": {
+      "title": "Source Document Id",
+      "type": "string"
+    },
+    "evidence_text": {
+      "maxLength": 4000,
+      "minLength": 10,
+      "title": "Evidence Text",
+      "type": "string"
+    },
+    "stance": {
+      "$ref": "#/$defs/EvidenceStance"
+    },
+    "relevance_score": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Relevance Score",
+      "type": "number"
+    },
+    "page_number": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Page Number"
+    },
+    "paragraph_index": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Paragraph Index"
+    },
+    "retrieval_method": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RetrievalMethod"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "claim_id",
+    "source_document_id",
+    "evidence_text",
+    "stance",
+    "relevance_score",
+    "created_at"
+  ],
+  "title": "EvidenceItem",
+  "type": "object"
+}

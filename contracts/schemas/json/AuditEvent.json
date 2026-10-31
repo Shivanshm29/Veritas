@@ -1,0 +1,133 @@
+{
+  "$defs": {
+    "ActorRole": {
+      "enum": [
+        "INVESTIGATOR",
+        "ANALYST",
+        "AUTOMATION_WORKER",
+        "ADMIN"
+      ],
+      "title": "ActorRole",
+      "type": "string"
+    },
+    "AuditEventType": {
+      "enum": [
+        "INVESTIGATION_CREATED",
+        "ASSET_INGESTED",
+        "PIPELINE_EXECUTED",
+        "CLAIM_EXTRACTED",
+        "CLAIM_ASSESSED",
+        "FORENSIC_ANALYSIS_COMPLETED",
+        "REPORT_GENERATED",
+        "STATUS_CHANGED"
+      ],
+      "title": "AuditEventType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 12: Immutable cryptographic audit trail record.",
+  "properties": {
+    "id": {
+      "description": "ID with format adt_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/$defs/AuditEventType"
+    },
+    "actor_id": {
+      "minLength": 1,
+      "title": "Actor Id",
+      "type": "string"
+    },
+    "actor_role": {
+      "$ref": "#/$defs/ActorRole"
+    },
+    "target_entity_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Entity Id"
+    },
+    "target_entity_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Entity Type"
+    },
+    "action_details": {
+      "additionalProperties": true,
+      "title": "Action Details",
+      "type": "object"
+    },
+    "sha256_payload_hash": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sha256 Payload Hash"
+    },
+    "ip_address": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ip Address"
+    },
+    "user_agent": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "User Agent"
+    },
+    "timestamp": {
+      "format": "date-time",
+      "title": "Timestamp",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "event_type",
+    "actor_id",
+    "actor_role",
+    "timestamp"
+  ],
+  "title": "AuditEvent",
+  "type": "object"
+}

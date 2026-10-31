@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "PipelineStatus": {
+      "enum": [
+        "SUCCESS",
+        "PARTIAL_SUCCESS",
+        "FAILED"
+      ],
+      "title": "PipelineStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 4: Algorithmic processing output (OCR, ASR, embeddings).",
+  "properties": {
+    "id": {
+      "description": "ID with format res_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "asset_id": {
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "pipeline_name": {
+      "minLength": 1,
+      "title": "Pipeline Name",
+      "type": "string"
+    },
+    "pipeline_version": {
+      "minLength": 1,
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/PipelineStatus"
+    },
+    "execution_time_ms": {
+      "minimum": 0,
+      "title": "Execution Time Ms",
+      "type": "integer"
+    },
+    "extracted_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Extracted Text"
+    },
+    "face_bounding_boxes": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Face Bounding Boxes",
+      "type": "array"
+    },
+    "transcript_segments": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Transcript Segments",
+      "type": "array"
+    },
+    "raw_features_uri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Features Uri"
+    },
+    "error_message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Message"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "asset_id",
+    "pipeline_name",
+    "pipeline_version",
+    "status",
+    "execution_time_ms",
+    "created_at"
+  ],
+  "title": "ProcessingResult",
+  "type": "object"
+}

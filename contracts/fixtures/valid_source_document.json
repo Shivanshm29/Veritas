@@ -1,0 +1,15 @@
+{
+  "id": "doc_67890123-6789-4789-8789-678901234f01",
+  "title": "[SYNTHETIC FIXTURE] Ministry Official Press Release: Subsidies Extended Through Q4",
+  "url": "https://gov.example.org/press/2026-10-30/subsidy-extension",
+  "domain": "gov.example.org",
+  "author": "Department of Public Information",
+  "publisher": "Official Gazette",
+  "published_date": "2026-10-30T18:00:00.000000Z",
+  "retrieval_timestamp": "2026-10-31T06:09:30.000000Z",
+  "content_snippet": "[SYNTHETIC FIXTURE] All emergency subsidy disbursements remain fully funded through December 31, 2026. Claims of cancellation are false.",
+  "content_sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "source_reliability_score": 0.98,
+  "full_text_storage_uri": "file:///var/pramaan/sources/doc_67890123.txt"
+}
+

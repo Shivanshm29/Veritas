@@ -1,0 +1,12 @@
+{
+  "id": "asm_89012345-8901-4901-8901-890123456123",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "claim_id": "clm_56789012-5678-4678-8678-567890123ef0",
+  "verdict": "REFUTED",
+  "confidence_score": 0.95,
+  "explanation": "[SYNTHETIC FIXTURE] Claim is refuted with zero cited evidence, violating epistemic traceability rule.",
+  "cited_evidence_ids": [],
+  "model_identifier": "pramaan-fact-verifier-v2.1",
+  "assessed_at": "2026-10-31T06:11:00.000000Z"
+}
+

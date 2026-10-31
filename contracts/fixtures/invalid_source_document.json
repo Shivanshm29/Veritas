@@ -1,0 +1,10 @@
+{
+  "id": "doc_67890123-6789-4789-8789-678901234f01",
+  "title": "Bad Source Document",
+  "url": "not_a_valid_http_url",
+  "domain": "example.com",
+  "retrieval_timestamp": "2026-10-31T06:09:30.000000Z",
+  "content_snippet": "Too short",
+  "content_sha256": "bad_hash"
+}
+

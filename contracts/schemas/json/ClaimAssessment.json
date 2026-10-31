@@ -1,0 +1,88 @@
+{
+  "$defs": {
+    "ClaimVerdict": {
+      "enum": [
+        "SUPPORTED",
+        "REFUTED",
+        "CONTRADICTORY_EVIDENCE",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "title": "ClaimVerdict",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Model 8: Synthesized semantic factuality assessment of a claim.",
+  "properties": {
+    "id": {
+      "description": "ID with format asm_<uuid4>",
+      "title": "Id",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "claim_id": {
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "verdict": {
+      "$ref": "#/$defs/ClaimVerdict"
+    },
+    "confidence_score": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence Score",
+      "type": "number"
+    },
+    "explanation": {
+      "minLength": 20,
+      "title": "Explanation",
+      "type": "string"
+    },
+    "cited_evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Cited Evidence Ids",
+      "type": "array"
+    },
+    "conflicting_points": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conflicting Points",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "model_identifier": {
+      "minLength": 1,
+      "title": "Model Identifier",
+      "type": "string"
+    },
+    "assessed_at": {
+      "format": "date-time",
+      "title": "Assessed At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "investigation_id",
+    "claim_id",
+    "verdict",
+    "confidence_score",
+    "explanation",
+    "model_identifier",
+    "assessed_at"
+  ],
+  "title": "ClaimAssessment",
+  "type": "object"
+}

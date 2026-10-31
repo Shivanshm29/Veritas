@@ -1,0 +1,20 @@
+{
+  "id": "adt_23456789-01bc-4def-9012-3456789abcde",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "event_type": "FORENSIC_ANALYSIS_COMPLETED",
+  "actor_id": "worker_video_forensics_02",
+  "actor_role": "AUTOMATION_WORKER",
+  "target_entity_id": "fnd_90123456-9012-4012-8012-901234567234",
+  "target_entity_type": "ForensicFinding",
+  "action_details": {
+    "is_synthetic_fixture": true,
+    "model": "DeepFake-TemporalSyncNet",
+    "verdict": "LIKELY_SYNTHETIC",
+    "execution_time_ms": 3210
+  },
+  "sha256_payload_hash": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+  "ip_address": "127.0.0.1",
+  "user_agent": "PramaanWorker/1.0",
+  "timestamp": "2026-10-31T06:12:35.000000Z"
+}
+

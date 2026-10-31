@@ -1,0 +1,12 @@
+{
+  "id": "rpt_12345678-90ab-4cde-8f01-23456789abcd",
+  "investigation_id": "inv_12345678-1234-4234-8234-123456789abc",
+  "version": 0,
+  "report_status": "FINAL",
+  "executive_summary": "Too short.",
+  "overall_media_authenticity": "UNKNOWN_ENUM_VALUE",
+  "overall_claim_validity": "MOSTLY_FALSE",
+  "lead_investigator_id": "inv_agent_04",
+  "generated_at": "2026-10-31T06:14:00.000000Z"
+}
+
