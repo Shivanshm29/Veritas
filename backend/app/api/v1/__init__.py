@@ -3,7 +3,16 @@ API v1 Router aggregation for Veritas.
 """
 
 from fastapi import APIRouter
-from backend.app.api.v1.endpoints import assets, claims, evidence, health, image, video
+from backend.app.api.v1.endpoints import (
+    assets,
+    audio,
+    claims,
+    evidence,
+    health,
+    image,
+    provenance,
+    video,
+)
 
 api_v1_router = APIRouter()
 api_v1_router.include_router(health.router)
@@ -12,3 +21,5 @@ api_v1_router.include_router(claims.router)
 api_v1_router.include_router(evidence.router)
 api_v1_router.include_router(image.router)
 api_v1_router.include_router(video.router)
+api_v1_router.include_router(audio.router)
+api_v1_router.include_router(provenance.router)

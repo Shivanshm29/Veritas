@@ -89,3 +89,6 @@ yarn-error.log*
 sample_video.mp4
 
 test_run_video.py
+
+sample_audio.wav
+test_run_audio.py
