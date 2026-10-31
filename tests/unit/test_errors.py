@@ -7,6 +7,11 @@ from backend.app.core.errors import (
     PramaanException,
     ResourceNotFoundError,
     ServiceUnavailableError,
+    PayloadTooLargeError,
+    InvalidMimeTypeError,
+    EmptyFileError,
+    InvalidIdentifierError,
+    InvalidAssetError,
 )
 from backend.app.schemas.problem import ProblemDetail
 
@@ -51,4 +56,27 @@ def test_problem_detail_serialization():
     assert dumped["status"] == 400
     assert dumped["title"] == "Bad Input"
     assert "timestamp" in dumped
+
+
+def test_phase1_domain_errors():
+    """Verifies domain errors introduced in Phase 1 create proper RFC 9457 attributes."""
+    large_exc = PayloadTooLargeError(500, 1000)
+    assert large_exc.status_code == 413
+    assert large_exc.code == "PAYLOAD_TOO_LARGE"
+
+    mime_exc = InvalidMimeTypeError("application/pdf", ["image/jpeg"])
+    assert mime_exc.status_code == 400
+    assert mime_exc.code == "INVALID_MIME_TYPE"
+
+    empty_exc = EmptyFileError()
+    assert empty_exc.status_code == 400
+    assert empty_exc.code == "EMPTY_FILE"
+
+    id_exc = InvalidIdentifierError("bad_id", "ast_<uuid4>")
+    assert id_exc.status_code == 422
+    assert id_exc.code == "INVALID_IDENTIFIER"
+
+    asset_exc = InvalidAssetError("Spoofed content header.")
+    assert asset_exc.status_code == 400
+    assert asset_exc.code == "INVALID_ASSET"
 

@@ -22,6 +22,9 @@ from backend.app.core.errors import (
     validation_exception_handler,
 )
 from backend.app.core.logging import logger
+from backend.app.db.base import Base
+from backend.app.db.session import engine
+import backend.app.db.models  # noqa: F401
 from backend.app.schemas.health import BasicHealthResponse
 from backend.app.services.health import get_basic_health
 
@@ -32,6 +35,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info(
         f"Starting {settings.PROJECT_NAME} v{settings.VERSION} [{settings.ENVIRONMENT}]"
     )
+    # Ensure database schema is initialized
+    Base.metadata.create_all(bind=engine)
     yield
     logger.info(f"Shutting down {settings.PROJECT_NAME}")
 

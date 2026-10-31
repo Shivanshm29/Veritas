@@ -59,6 +59,67 @@ class ServiceUnavailableError(VeritasException):
         )
 
 
+class PayloadTooLargeError(VeritasException):
+    def __init__(self, max_size_bytes: int, actual_size_bytes: int = None):
+        detail = f"File size exceeds maximum permitted limit of {max_size_bytes} bytes."
+        if actual_size_bytes is not None:
+            detail += f" Uploaded file size is {actual_size_bytes} bytes."
+        super().__init__(
+            status_code=status.HTTP_413_CONTENT_TOO_LARGE,
+            title="Payload Too Large",
+            detail=detail,
+            code="PAYLOAD_TOO_LARGE",
+            error_type="https://veritas.org/errors/PAYLOAD_TOO_LARGE",
+        )
+
+
+class InvalidMimeTypeError(VeritasException):
+    def __init__(self, mime_type: str, allowed_types: List[str] = None):
+        detail = f"Unsupported MIME type '{mime_type}'."
+        if allowed_types:
+            detail += f" Supported formats: {', '.join(allowed_types)}."
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            title="Invalid MIME Type",
+            detail=detail,
+            code="INVALID_MIME_TYPE",
+            error_type="https://veritas.org/errors/INVALID_MIME_TYPE",
+        )
+
+
+class EmptyFileError(VeritasException):
+    def __init__(self, detail: str = "Uploaded file is empty (0 bytes)."):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            title="Empty File",
+            detail=detail,
+            code="EMPTY_FILE",
+            error_type="https://veritas.org/errors/EMPTY_FILE",
+        )
+
+
+class InvalidIdentifierError(VeritasException):
+    def __init__(self, identifier: str, expected_format: str):
+        super().__init__(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            title="Invalid Identifier",
+            detail=f"Identifier '{identifier}' is invalid. Expected format: '{expected_format}'.",
+            code="INVALID_IDENTIFIER",
+            error_type="https://veritas.org/errors/INVALID_IDENTIFIER",
+        )
+
+
+class InvalidAssetError(VeritasException):
+    def __init__(self, detail: str):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            title="Invalid Asset",
+            detail=detail,
+            code="INVALID_ASSET",
+            error_type="https://veritas.org/errors/INVALID_ASSET",
+        )
+
+
 async def veritas_exception_handler(request: Request, exc: VeritasException) -> JSONResponse:
     """Handles domain-specific VeritasException."""
     problem = ProblemDetail(
@@ -92,7 +153,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     problem = ProblemDetail(
         type="https://veritas.org/errors/VALIDATION_ERROR",
         title="Request Validation Error",
-        status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status=status.HTTP_422_UNPROCESSABLE_CONTENT,
         detail="One or more fields in the request payload failed schema validation.",
         instance=str(request.url.path),
         code="VALIDATION_ERROR",
@@ -100,7 +161,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         timestamp=datetime.now(timezone.utc),
     )
     return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content=problem.model_dump(mode="json"),
         headers={"Content-Type": "application/problem+json"},
     )

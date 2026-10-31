@@ -1,9 +1,10 @@
 # Veritas — Multimodal Deepfake Detection & Claim Verification Network
 
 > **Project:** Veritas / PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-> **Phase:** Phase 0 — Project Foundation & Architecture (Remediated Baseline)  
+> **Phase:** Phase 1 — Data Ingestion & Evidence Asset Management (Active Feature Branch)  
 > **GitHub Repository:** [https://github.com/Shivanshm29/Veritas.git](https://github.com/Shivanshm29/Veritas.git)  
-> **Default Branch:** `main`
+> **Default Branch:** `main`  
+> **Phase 1 Branch:** `feature/phase-1-data-ingestion`
 
 ---
 
@@ -233,8 +234,9 @@ Load synthetic test doubles from `contracts/fixtures/`:
 | **Shared Contracts (12 Models)** | `IMPLEMENTED` | Pydantic v2 schemas, 24 synthetic fixtures, 12 exported JSON schemas. |
 | **Contract Semantics Remediated** | `IMPLEMENTED` | Explicit raw vs. calibrated scores, local direct self-derivation checks vs Phase 8 graph checks. |
 | **Worker Subsystem Scaffold** | `IMPLEMENTED` | `InMemoryTaskRunner` for non-blocking asynchronous task execution without Redis. |
-| **Automated Tests** | `IMPLEMENTED` | **73 passing tests** across unit, contract, API, integration, and security suites. |
-| **Phase 1 Ingestion** | `PLANNED` | File upload streaming, MIME validation, FFprobe inspection, S3 evidence persistence. |
+| **Phase 1 Ingestion** | `IMPLEMENTED` | Bounded chunk streaming, SHA-256 calculation, magic-byte MIME validation, atomic file storage, path traversal defense, transactional storage rollback on DB failure. |
+| **Evidence Asset API** | `IMPLEMENTED` | `POST /api/v1/assets/upload`, `GET /api/v1/assets/{asset_id}`, `GET /api/v1/assets`. |
+| **Automated Tests** | `IMPLEMENTED` | **106 passing tests** across unit, contract, API, integration, and security suites. |
 | **Phase 2 Claims & NLP** | `PLANNED` | Whisper ASR transcription, Surya OCR, claim extraction pipelines. |
 | **Phase 3 Source Retrieval** | `PLANNED` | SearXNG / Google Search providers, dense vector retrieval (BM25 + Chroma/Qdrant). |
 | **Phase 4 Claim Verification** | `PLANNED` | NLI cross-encoder fact checking, verdict synthesis, citation generation. |

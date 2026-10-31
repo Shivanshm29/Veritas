@@ -5,6 +5,7 @@ Database session management and connection diagnostics for Veritas.
 from typing import Any, Dict, Generator
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import StaticPool
 
 from backend.app.core.config import settings
 from backend.app.core.logging import logger
@@ -14,6 +15,8 @@ def get_engine_args(url: str) -> Dict[str, Any]:
     args: Dict[str, Any] = {}
     if url.startswith("sqlite"):
         args["connect_args"] = {"check_same_thread": False}
+        if ":memory:" in url:
+            args["poolclass"] = StaticPool
     else:
         args["pool_pre_ping"] = True
     return args
