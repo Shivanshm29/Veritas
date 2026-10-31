@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test] || pip install pytest pytest-asyncio httpx fastapi pydantic pydantic-settings sqlalchemy alembic
+          pip install -e .[test] || pip install pytest pytest-asyncio httpx fastapi pydantic pydantic-settings sqlalchemy alembic pillow numpy opencv-python-headless python-multipart
 
       - name: Verify Contract Schema Export
         run: |
@@ -33,4 +33,3 @@ jobs:
       - name: Run Phase 0 Pytest Battery
         run: |
           pytest tests backend/tests workers/tests -v --durations=10
-
