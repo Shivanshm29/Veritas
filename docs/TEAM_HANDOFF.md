@@ -177,6 +177,33 @@ python scripts/run_checks.py
 
 1. **Pending Approval on ForensicFinding & AssetDerivation:**
    - In Phase 0, Person 1 refined `ForensicFinding` to separate raw model scores (`raw_score`, `raw_score_type`) from calibrated probabilities (`calibrated_score`), and clarified that `AssetDerivation` local checks only prevent direct self-derivation ($A \to A$), leaving multi-hop DAG cycle checks to your Phase 8 graph engine.
-   - **Status:** This is documented as a proposal for your formal review. Please inspect `contracts/schemas/models.py` and confirm sign-off.
+   - **Status:** **PENDING**. This is documented as a proposal for your formal review. Please inspect `contracts/schemas/models.py` and confirm sign-off before merging shared contract changes.
 2. **Untested Live Infrastructure:** Docker Compose services (PostgreSQL 16, Redis 7, MinIO S3) are specified in `infra/docker-compose.yml`, but were not tested against a live daemon during Phase 0 local validation. In-memory SQLite (`sqlite:///:memory:`) was used for test isolation.
 3. **Host FFmpeg:** Ensure FFmpeg and FFprobe are installed and present in your system PATH before developing media decoding pipelines in Phase 5 and Phase 6.
+
+---
+
+## 8. Shared Contract Specification Matrix & Formal Handoff
+
+The 12 canonical Pydantic v2 schemas in `contracts/schemas/models.py` form the single source of truth across all 14 roadmap phases:
+
+| Canonical Entity | ID Prefix | Primary Owner | Required Fields | Optional Fields | Score Semantics | Version & Compatibility |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **`Investigation`** | `inv_` | Shared | `id`, `title`, `description`, `status`, `lead_investigator_id`, `created_at`, `updated_at` | `priority`, `tags`, `assigned_collaborator_ids`, `closed_at`, `closure_reason` | Strict `InvestigationStatus` enum | v1.0.0; additive changes backward-compatible. |
+| **`EvidenceAsset`** | `ast_` | Person 1 | `id`, `investigation_id`, `asset_type`, `mime_type`, `original_filename`, `file_size_bytes`, `sha256_hash`, `storage_uri`, `status`, `created_at` | `source_url`, `acquisition_method`, `md5_hash`, `duration_seconds`, `width_px`, `height_px`, `parent_asset_id` | Checksum & MIME invariants | v1.0.0; storage URI scheme validated. |
+| **`AssetDerivation`** | `drv_` | Shared | `id`, `derived_asset_id`, `parent_asset_id`, `derivation_type`, `created_at` | `operator_id`, `tool_name`, `tool_version`, `parameters`, `bounding_box`, `time_range_ms` | Rejects direct self-derivation ($A \to A$) | v1.0.0; multi-hop DAG cycle detection deferred to Phase 8. |
+| **`ProcessingResult`** | `res_` | Person 1 | `id`, `asset_id`, `task_name`, `worker_id`, `status`, `execution_time_ms`, `created_at` | `output_payload`, `error_message`, `error_code`, `model_name`, `model_version` | Execution metrics; non-negative duration | v1.0.0; `error_message` required on FAILED status. |
+| **`Claim`** | `clm_` | Person 1 | `id`, `investigation_id`, `claim_text`, `language`, `extraction_confidence`, `status`, `extracted_at` | `source_asset_id`, `source_timecode_start_ms`, `source_timecode_end_ms`, `speaker_id`, `claim_type` | `extraction_confidence` in $[0.0, 1.0]$; timecode ordering | v1.0.0; start $\le$ end milliseconds enforced. |
+| **`SourceDocument`** | `doc_` | Person 1 | `id`, `title`, `url`, `domain`, `retrieval_timestamp`, `content_snippet`, `content_sha256` | `author`, `publisher`, `published_date`, `source_reliability_score`, `full_text_storage_uri` | `source_reliability_score` in $[0.0, 1.0]$ | v1.0.0; URL scheme & 64-char hex hash enforced. |
+| **`EvidenceItem`** | `evi_` | Person 1 | `id`, `claim_id`, `source_document_id`, `evidence_text`, `stance`, `relevance_score`, `created_at` | `page_number`, `paragraph_index`, `retrieval_method` | `relevance_score` in $[0.0, 1.0]$; `EvidenceStance` enum | v1.0.0; text length 10–4000 characters. |
+| **`ClaimAssessment`** | `asm_` | Person 1 | `id`, `investigation_id`, `claim_id`, `verdict`, `confidence_score`, `explanation`, `model_identifier`, `assessed_at` | `cited_evidence_ids`, `conflicting_points`, `limitations` | `confidence_score` in $[0.0, 1.0]$; `ClaimVerdict` enum | v1.0.0; `cited_evidence_ids` non-empty on SUPPORTED/REFUTED. |
+| **`ForensicFinding`** | `fnd_` | Person 2 | `id`, `investigation_id`, `asset_id`, `modality`, `technique`, `raw_score`, `raw_score_type`, `calibration_status`, `verdict`, `model_name`, `model_version`, `executed_at` | `calibrated_score`, `calibration_method`, `calibration_metadata`, `score_interpretation`, `region_of_interest`, `heatmap_artifact_uri`, `detected_artifacts`, `limitations_notes` | Decoupled: `raw_score` (scale typed by `RawScoreType`); `calibrated_score` in $[0.0, 1.0]$ requires empirical `calibration_method` and `calibration_status == "CALIBRATED"` | v1.0.0; legacy `score_type` preserved as backward-compatible alias. **Pending Person 2 Sign-Off.** |
+| **`ProvenanceRelationship`** | `rel_` | Person 2 | `id`, `investigation_id`, `source_node_id`, `source_node_type`, `target_node_id`, `target_node_type`, `relationship_type`, `confidence`, `created_at` | `evidence_citation_id`, `edge_weight`, `metadata` | `confidence` in $[0.0, 1.0]$; self-loop ($A \to A$) strictly rejected | v1.0.0; multi-hop DAG cycle checks deferred to Phase 8. |
+| **`InvestigationReport`** | `rpt_` | Person 2 | `id`, `investigation_id`, `version`, `executive_summary`, `overall_media_authenticity`, `overall_claim_validity`, `lead_investigator_id`, `generated_at` | `report_status`, `included_finding_ids`, `included_assessment_ids`, `disclaimers`, `exported_pdf_uri` | Authenticity & validity enums; summary $\ge 50$ chars | v1.0.0; version $\ge 1$. |
+| **`AuditEvent`** | `adt_` | Shared | `id`, `investigation_id`, `event_type`, `actor_id`, `actor_role`, `timestamp` | `target_entity_id`, `target_entity_type`, `action_details`, `sha256_payload_hash`, `ip_address`, `user_agent` | Append-only immutability | v1.0.0; payload SHA-256 hash verified. |
+
+### Sign-off Status
+- **Person 1 Approval:** `APPROVED` (Phase 0 Author).
+- **Person 2 Approval:** `PENDING` (Awaiting review on separate machine).
+
+

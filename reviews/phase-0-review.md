@@ -14,11 +14,11 @@
 ```
 ================================================================================
 PHASE 0 REVIEW VERDICT:
-PASS — Remediated & Eligible to proceed to Phase 1 after Person 2 contract review.
+PASS — Foundation Implemented, Verified & Published (Shared Contract Sign-Off: PENDING)
 ================================================================================
 ```
 
-All 16 acceptance criteria for Phase 0 have been implemented, tested, and verified, including targeted remediation of forensic score semantics and derivation cycle boundaries. The backend foundation, 12 shared canonical data contracts, 24 synthetic JSON fixtures, worker scaffold, documentation suite, and Docker Compose infrastructure have been built and verified from scratch. **73 automated tests executed cleanly with 100% pass rate (0 failures, 0 warnings).**
+All 16 technical acceptance criteria for Phase 0 have been implemented, tested, and verified, including targeted remediation of forensic score semantics and derivation cycle boundaries. The backend foundation, 12 shared canonical data contracts, 24 synthetic JSON fixtures, worker scaffold, documentation suite, and Docker Compose infrastructure have been built and verified from scratch. **73 automated tests executed cleanly with 100% pass rate (0 failures, 0 warnings).** The repository is committed and published to GitHub at `origin/main`. Person 2 shared-contract approval is formally recorded as `PENDING` awaiting asynchronous peer review.
 
 ---
 
@@ -26,8 +26,9 @@ All 16 acceptance criteria for Phase 0 have been implemented, tested, and verifi
 
 - **Repository Root:** `C:\Users\shiva\projects\Deepfake detection` is established as an independent Git repository (`git init -b main`).
 - **Isolation from Parent Directory:** Git tracking is strictly localized to the project root, completely decoupled from the uncommitted parent directory `C:\Users\shiva\projects`.
-- **Git Branch & State:** Local branch `main` with untracked files awaiting formal commit; no commits have been staged or made without authorization.
-- **Configured Remotes:** `git remote -v` reports **no configured remotes** (independent offline local repository; no remote URL assumed or invented).
+- **Git Branch & State:** Local branch `main` tracks `origin/main`.
+- **Configured Remotes:** `origin` is configured to `https://github.com/Shivanshm29/Veritas.git` (`git remote -v` verified).
+- **Publication Verification:** Successfully pushed to GitHub `origin/main` at commit `a8cb7cb8ec565bcf5f4c610213f0c06f113932c0` (`git ls-remote origin` verified).
 - **Preserved Existing Work:** The initial integration audit report [`reviews/initial-integration-audit.md`](file:///c:/Users/shiva/projects/Deepfake%20detection/reviews/initial-integration-audit.md) has been fully preserved.
 
 ---
@@ -203,12 +204,13 @@ During the Phase 0 audit review, two specific contract-design issues were flagge
   - Clarified across architecture documentation (`contracts/README.md`, `docs/SYSTEM_ARCHITECTURE.md`, `docs/API_CONVENTIONS.md`) that global multi-hop cycle detection and DAG acyclicity enforcement belong to **Phase 8 (Provenance Graph Engine)** via graph traversal algorithms.
   - Zero Phase 8 provenance graph algorithms were prematurely written in Phase 0.
 
-### 3. Artifact & Test Updates
+### 3. Artifact Updates & Test-Count Discrepancy Resolution
+- **Baseline Count Explanation:** The initial Phase 0 draft contained 70 passing tests before calibration semantics remediation.
+- **Remediation Expansion (+3 net tests):** To properly validate `ForensicFinding` score semantics without false calibration claims, 4 new targeted unit tests were introduced into `tests/unit/test_core_models.py` (`test_forensic_finding_uncalibrated_defaults_valid`, `test_forensic_finding_calibrated_requires_score_and_method`, `test_forensic_finding_calibrated_bounds`, `test_forensic_finding_uncalibrated_rejects_calibrated_score`), replacing 1 pre-remediation test (`test_forensic_finding_calibrated_bounds`). This brings the definitive, verified test collection to exactly **73 tests**.
+- **Documentation Reconciliation:** All project documents (`README.md`, `docs/TEAM_HANDOFF.md`, and this review) now consistently cite the actual collected and passing count of **73 tests**.
 - Updated valid/invalid fixtures (`valid_forensic_finding.json`, `invalid_forensic_finding.json`).
-- Added 4 targeted unit tests in `tests/unit/test_core_models.py` verifying calibration invariants.
 - Re-exported all 12 standalone JSON schemas to `contracts/schemas/json/`.
-- Full pytest test suite grew from 70 to 73 tests, all passing cleanly.
-
+- Full pytest test battery re-executed: **73 passed in 2.36s** (0 failures, 0 warnings, 0 skipped, exit code 0).
 
 ---
 
@@ -233,13 +235,17 @@ During the Phase 0 audit review, two specific contract-design issues were flagge
 
 ---
 
-## 9. Infrastructure Configuration Verified
+## 9. Infrastructure Configuration & Live Service Limitations
 
 - `infra/docker-compose.yml` defines isolated development containers:
   - `postgres` (PostgreSQL 16 Alpine, port 5432, `pg_isready` health check, persistent volume `pramaan_pgdata`).
   - `redis` (Redis 7 Alpine, port 6379, `redis-cli ping` health check, persistent volume `pramaan_redisdata`).
   - `minio` (MinIO S3 storage, ports 9000 & 9001, persistent volume `pramaan_miniodata`).
-- **No-Docker Fallback:** Verified that all 70 automated tests execute cleanly against in-memory SQLite (`sqlite:///:memory:`) when Docker is offline.
+- **Live Infrastructure Status:**
+  - **Docker CLI:** `Docker version 29.7.2` installed, but the local Docker Desktop Linux daemon is **offline** (`failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine`).
+  - **Local Host Ports:** Port 5432 responded to TCP handshake (local service); ports 6379 (Redis) and 9000 (MinIO) were **unreachable**.
+  - **Unexecuted Live Service Tests:** Live multi-container integration tests against external PostgreSQL/Redis/MinIO instances were not executed and are **not** marked as passed.
+  - **Isolated Fallback Mode:** All 73 automated tests executed against in-memory SQLite (`sqlite:///:memory:`) and in-process async worker queues. All tests passed cleanly without external service dependencies.
 
 ---
 
@@ -355,9 +361,9 @@ All 73 automated tests were re-executed after the remediation of forensic calibr
 
 ## 16. Continuous Integration Status
 
-- `.github/workflows/ci.yml` is created and configured.
+- `.github/workflows/ci.yml` is created, committed, and pushed to `origin/main`.
 - It defines automated dependency installation, schema export verification, and pytest execution across Ubuntu runners on Python 3.12.
-- **Status:** Configured in repository; has not yet executed on GitHub remote.
+- **Status:** Published to GitHub; will trigger automated regression runs on subsequent pull requests.
 
 ---
 
@@ -369,8 +375,8 @@ Person 2 can develop on their separate workstation using three methods:
 3. **Synthetic Fixtures:** Load the 24 JSON files in `contracts/fixtures/` to mock Person 1's ingestion and claim responses without running Person 1's backend.
 
 > [!IMPORTANT]
-> **Notice for Person 2 Review:**  
-> The modifications to `ForensicFinding` (decoupling `raw_score` from `calibrated_score`, adding `RawScoreType` and `CalibrationStatus`) and the clarification of `AssetDerivation` local vs. Phase 8 graph cycle checks have been implemented in `contracts/schemas/models.py` and documented in `contracts/README.md`. As these touch shared contracts, they are designated as a backward-compatible proposal awaiting formal review and sign-off by Person 2. Mutual approval is not assumed until Person 2 reviews and confirms.
+> **Notice for Person 2 Review & Formal Sign-Off Status:**  
+> The modifications to `ForensicFinding` (decoupling `raw_score` from `calibrated_score`, adding `RawScoreType` and `CalibrationStatus`) and the clarification of `AssetDerivation` local vs. Phase 8 graph cycle checks have been implemented in `contracts/schemas/models.py` and documented in `contracts/README.md` and `docs/TEAM_HANDOFF.md`. As these touch shared contracts, they are designated as a backward-compatible proposal awaiting formal review and sign-off by Person 2. **Person 2 sign-off status is PENDING.** Mutual approval is not assumed until Person 2 reviews and confirms.
 
 ---
 
@@ -378,22 +384,23 @@ Person 2 can develop on their separate workstation using three methods:
 
 | # | Acceptance Criterion | State | Evidence |
 | :--- | :--- | :--- | :--- |
-| 1 | Intended repository and Git state verified | `PASS` | `git status` shows independent clean repo on branch `main`; no remotes configured. |
+| 1 | Intended repository and Git state verified | `PASS` | Repository remote `origin` configured to `https://github.com/Shivanshm29/Veritas.git`; pushed commit `a8cb7cb`; branch `main` tracking `origin/main`. |
 | 2 | Backend foundation starts successfully | `PASS` | `create_app()` initializes cleanly with lifespan. |
 | 3 | Health endpoints have passing automated tests | `PASS` | `test_health.py` passes all 3 tests. |
 | 4 | Shared contracts implemented & validated | `PASS` | All 12 models in `contracts/schemas/models.py` (remediated). |
 | 5 | Fixtures internally consistent & labeled synthetic | `PASS` | All 24 fixtures pass/fail as expected. |
 | 6 | Worker scaffold tests pass | `PASS` | `test_worker.py` passes all 4 tests. |
-| 7 | Documentation & roadmap complete and consistent | `PASS` | Exact 14 phases in `docs/ROADMAP.md` and 6 core docs updated. |
-| 8 | Infrastructure configuration validated | `PASS` | `infra/docker-compose.yml` validated. |
+| 7 | Documentation & roadmap complete and consistent | `PASS` | Exact 14 phases in `docs/ROADMAP.md` and 7 core docs updated. |
+| 8 | Infrastructure configuration validated | `PASS` | `infra/docker-compose.yml` validated; fallback in-memory SQLite verified. |
 | 9 | Security & regression checks executed | `PASS` | `test_cors_and_security.py` passes all 4 tests. |
 | 10 | Dependency installation reproducible | `PASS` | `pyproject.toml` and `.env.example` verified. |
-| 11 | CI configuration exists | `PASS` | `.github/workflows/ci.yml` created. |
-| 12 | All feasible tests executed & reported honestly | `PASS` | 73 tests executed and reported with exact counts (0 failures, 0 warnings). |
+| 11 | CI configuration exists & published | `PASS` | `.github/workflows/ci.yml` published to GitHub. |
+| 12 | All feasible tests executed & reported honestly | `PASS` | 73 tests executed and reported with exact counts (0 failures, 0 warnings). Discrepancy with legacy 70-test draft resolved. |
 | 13 | No Person 2 business logic implemented | `PASS` | 0 forensics or workspace logic written. |
 | 14 | No later-phase Person 1 functionality implemented | `PASS` | 0 actual ingestion, extraction, or verification logic written. |
-| 15 | Person 2 can independently consume contracts | `PASS` | `contracts/README.md` and exported JSON schemas available. |
-| 16 | No secrets accidentally committed | `PASS` | `.env` gitignored; `.env.example` uses placeholder credentials. |
+| 15 | Person 2 can independently consume contracts | `PASS` | `contracts/README.md`, `docs/TEAM_HANDOFF.md`, and exported JSON schemas available. |
+| 16 | No secrets accidentally committed | `PASS` | `.env` gitignored; `.env.example` uses placeholder credentials; working tree audit passed. |
+| 17 | Person 2 Shared Contract Sign-Off | `PENDING` | Formal handoff matrix published in `docs/TEAM_HANDOFF.md`; awaiting Person 2 sign-off. |
 
 ---
 
@@ -407,10 +414,10 @@ Person 2 can develop on their separate workstation using three methods:
 
 ## 20. Recommended Next Actions
 
-Phase 0 has achieved a **PASS** verdict. Person 1 is eligible to proceed to **Phase 1 — Data Ingestion & Evidence Asset Management**.
+Phase 0 has achieved a **PASS** verdict (with Person 2 shared-contract sign-off formally recorded as `PENDING`). Person 1 is eligible to proceed to **Phase 1 — Data Ingestion & Evidence Asset Management**.
 
 Before starting Phase 1:
-1. Review and commit Phase 0 changes to `main`.
-2. Share `contracts/` with Person 2 for mutual sign-off on the 12 shared schemas.
-3. Install FFmpeg binaries on the host system to prepare for media decoding in Phase 1 and Phase 2.
+1. Coordinate with Person 2 to review `docs/TEAM_HANDOFF.md` and obtain shared-contract sign-off on the 12 schemas.
+2. Install static FFmpeg binaries on the host system to prepare for media decoding in Phase 1 and Phase 2.
+3. Maintain branch isolation: ensure Person 2 works on feature branches (e.g. `feature/phase-5-image-forensics`) and Person 1 works on `feature/phase-1-data-ingestion`.
 
