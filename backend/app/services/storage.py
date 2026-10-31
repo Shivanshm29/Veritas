@@ -16,7 +16,7 @@ from typing import AsyncGenerator, Optional, Union
 from fastapi import UploadFile
 
 from backend.app.core.config import settings
-from backend.app.core.errors import PayloadTooLargeError, EmptyFileError
+from backend.app.core.errors import PayloadTooLargeError, EmptyFileError, InvalidAssetError
 from backend.app.core.logging import logger
 from backend.app.services.validation import detect_and_validate_mime, sanitize_filename
 
@@ -70,6 +70,14 @@ class LocalFileStorageService(StorageService):
         temp_path = self.base_dir / temp_filename
         final_filename = f"{asset_id}_{safe_filename}"
         final_path = self.base_dir / final_filename
+
+        # Defense-in-depth: Ensure paths strictly resolve within base_dir
+        resolved_base = self.base_dir.resolve()
+        resolved_temp = temp_path.resolve()
+        resolved_final = final_path.resolve()
+
+        if not (resolved_final.is_relative_to(resolved_base) and resolved_temp.is_relative_to(resolved_base)):
+            raise InvalidAssetError(f"Storage path traversal detected for asset '{asset_id}'.")
 
         hasher = hashlib.sha256()
         total_bytes = 0

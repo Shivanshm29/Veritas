@@ -7,7 +7,7 @@ to prevent arbitrary file uploads, path traversal, and file spoofing.
 
 import os
 import re
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Dict, List, Optional, Set, Tuple
 
 from backend.app.core.errors import InvalidMimeTypeError, InvalidAssetError, EmptyFileError
@@ -48,7 +48,7 @@ EXTENSION_MIME_MAP: Dict[str, str] = {
 def sanitize_filename(filename: Optional[str]) -> str:
     """
     Sanitizes an untrusted filename to prevent path traversal, null-byte injection,
-    and filesystem reserved name collisions.
+    and filesystem reserved name collisions across both POSIX and Windows.
     """
     if not filename:
         return "unnamed_asset"
@@ -56,9 +56,8 @@ def sanitize_filename(filename: Optional[str]) -> str:
     # Remove null bytes
     sanitized = filename.replace("\x00", "")
 
-    # Extract basename to eliminate directory traversal sequences (../, C:\, etc.)
-    sanitized = Path(sanitized).name
-    sanitized = os.path.basename(sanitized)
+    # Extract basename to eliminate directory traversal sequences across both POSIX and Windows (../, C:\, etc.)
+    sanitized = PureWindowsPath(sanitized).name or "unnamed_asset"
 
     # Disallow leading/trailing dots and spaces
     sanitized = sanitized.strip(". ")
@@ -69,13 +68,14 @@ def sanitize_filename(filename: Optional[str]) -> str:
     # Collapse multiple consecutive underscores
     sanitized = re.sub(r"_+", "_", sanitized)
 
-    if not sanitized or sanitized in {".", ".."}:
+    if not sanitized or sanitized in {".", "..", "..."}:
         sanitized = "unnamed_asset"
 
     # Truncate length if excessively long
     if len(sanitized) > 200:
-        stem = Path(sanitized).stem[:190]
-        suffix = Path(sanitized).suffix[:10]
+        p = PureWindowsPath(sanitized)
+        stem = p.stem[:190]
+        suffix = p.suffix[:10]
         sanitized = f"{stem}{suffix}"
 
     return sanitized
