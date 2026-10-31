@@ -132,6 +132,61 @@
       "$ref": "#/$defs/ClaimStatus",
       "default": "EXTRACTED"
     },
+    "source_char_start": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "0-indexed start character offset in original text",
+      "title": "Source Char Start"
+    },
+    "source_char_end": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "0-indexed end character offset in original text",
+      "title": "Source Char End"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "maxLength": 10,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ISO 639-1 / BCP-47 language code",
+      "title": "Language"
+    },
+    "extraction_method": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Pipeline or model version used for extraction",
+      "title": "Extraction Method"
+    },
     "created_at": {
       "format": "date-time",
       "title": "Created At",

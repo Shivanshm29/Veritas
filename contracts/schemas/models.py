@@ -390,6 +390,10 @@ class Claim(VeritasBaseModel):
     claim_entities: List[str] = Field(default_factory=list)
     category: Optional[ClaimCategory] = None
     status: ClaimStatus = Field(default=ClaimStatus.EXTRACTED)
+    source_char_start: Optional[int] = Field(None, ge=0, description="0-indexed start character offset in original text")
+    source_char_end: Optional[int] = Field(None, ge=0, description="0-indexed end character offset in original text")
+    language: Optional[str] = Field(None, max_length=10, description="ISO 639-1 / BCP-47 language code")
+    extraction_method: Optional[str] = Field(None, description="Pipeline or model version used for extraction")
     created_at: datetime
 
     @field_validator("id")
@@ -414,6 +418,9 @@ class Claim(VeritasBaseModel):
         if self.source_timecode_start_ms is not None and self.source_timecode_end_ms is not None:
             if self.source_timecode_end_ms < self.source_timecode_start_ms:
                 raise ValueError("source_timecode_end_ms cannot be less than source_timecode_start_ms.")
+        if self.source_char_start is not None and self.source_char_end is not None:
+            if self.source_char_end < self.source_char_start:
+                raise ValueError("source_char_end cannot be less than source_char_start.")
         return self
 
 

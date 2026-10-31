@@ -1,0 +1,174 @@
+[
+  {
+    "id": "eval_01",
+    "language": "en",
+    "text": "The Ministry of Health confirmed 1,200 new cases of the virus across the capital on Monday.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "PUBLIC_HEALTH",
+    "expected_entities": ["Ministry of Health", "1,200", "Monday"]
+  },
+  {
+    "id": "eval_02",
+    "language": "en",
+    "text": "The Federal Reserve raised interest rates by 0.5% in September 2026.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "FINANCIAL",
+    "expected_entities": ["Federal Reserve", "0.5%", "September 2026"]
+  },
+  {
+    "id": "eval_03",
+    "language": "en",
+    "text": "Did the foreign minister travel to Geneva for the summit yesterday?",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "QUESTION"
+  },
+  {
+    "id": "eval_04",
+    "language": "en",
+    "text": "In my opinion, this new taxation policy is the worst decision ever made.",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "OPINION"
+  },
+  {
+    "id": "eval_05",
+    "language": "en",
+    "text": "Hello good morning to everyone tuning in today!",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "INCOMPLETE_OR_FRAGMENT"
+  },
+  {
+    "id": "eval_06",
+    "language": "en",
+    "text": "The 7.2 magnitude earthquake destroyed 40 buildings in the coastal city yesterday. Emergency crews deployed 500 responders.",
+    "expected_assessable": true,
+    "expected_claim_count": 2,
+    "expected_category": "DISASTER",
+    "expected_entities": ["7.2", "40", "500"]
+  },
+  {
+    "id": "eval_07",
+    "language": "en",
+    "text": "Please share this video with all your contacts right now!",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "COMMAND_OR_REQUEST"
+  },
+  {
+    "id": "eval_08",
+    "language": "en",
+    "text": "President Williams signed the bilateral trade agreement with Canada on October 10.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "POLITICAL",
+    "expected_entities": ["President Williams", "Canada", "October 10"]
+  },
+  {
+    "id": "eval_09",
+    "language": "hi",
+    "text": "भारतीय रिजर्व बैंक ने आज रेपो दर में 25 आधार अंकों की वृद्धि की घोषणा की।",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "FINANCIAL",
+    "expected_entities": ["भारतीय रिजर्व बैंक", "25"]
+  },
+  {
+    "id": "eval_10",
+    "language": "hi",
+    "text": "क्या सरकार कल आपातकालीन संसद सत्र बुलाएगी?",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "QUESTION"
+  },
+  {
+    "id": "eval_11",
+    "language": "hi",
+    "text": "प्रधानमंत्री ने 500 करोड़ रुपये की राहत पैकेज योजना का शुभारंभ किया।",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "POLITICAL",
+    "expected_entities": ["प्रधानमंत्री", "500"]
+  },
+  {
+    "id": "eval_12",
+    "language": "hi",
+    "text": "नमस्ते दोस्तों, आज का दिन बहुत सुंदर है।",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "INCOMPLETE_OR_FRAGMENT"
+  },
+  {
+    "id": "eval_13",
+    "language": "es",
+    "text": "El Ministerio de Economia confirmo un crecimiento del PIB del 3.2% en el tercer trimestre.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "FINANCIAL",
+    "expected_entities": ["Ministerio de Economia", "3.2%"]
+  },
+  {
+    "id": "eval_14",
+    "language": "es",
+    "text": "En mi opinion, el equipo jugo el peor partido de la temporada.",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "OPINION"
+  },
+  {
+    "id": "eval_15",
+    "language": "es",
+    "text": "El presidente anuncio la construccion de tres nuevos hospitales en Madrid.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "POLITICAL",
+    "expected_entities": ["Madrid"]
+  },
+  {
+    "id": "eval_16",
+    "language": "fr",
+    "text": "Le gouvernement a adopte le projet de loi sur la transition energetique hier apres-midi.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "POLITICAL",
+    "expected_entities": []
+  },
+  {
+    "id": "eval_17",
+    "language": "fr",
+    "text": "Pourquoi les autorites refusent-elles de publier les donnees completes?",
+    "expected_assessable": false,
+    "expected_claim_count": 0,
+    "abstention_type": "QUESTION"
+  },
+  {
+    "id": "eval_18",
+    "language": "fr",
+    "text": "L'Institut de veille sanitaire a enregistre 350 hospitalisations supplementaires en octobre 2026.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "PUBLIC_HEALTH",
+    "expected_entities": ["350", "octobre 2026"]
+  },
+  {
+    "id": "eval_19",
+    "language": "hi",
+    "text": "Yeh report bilkul fake hai aur sarkar ne koi naya tax nahi lagaya hai.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "GENERAL",
+    "expected_entities": []
+  },
+  {
+    "id": "eval_20",
+    "language": "en",
+    "text": "Hollywood actress Sarah Jenkins was married in Paris on Saturday.",
+    "expected_assessable": true,
+    "expected_claim_count": 1,
+    "expected_category": "CELEBRITY_IDENTITY",
+    "expected_entities": ["Sarah Jenkins", "Paris", "Saturday"]
+  }
+]
