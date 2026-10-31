@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Header } from './components/Header'
+import { Sidebar, type NavPage } from './components/Sidebar'
+import { TopNav } from './components/TopNav'
 import { MediaUploader } from './components/MediaUploader'
 import { ImageForensicsCard } from './components/ImageForensicsCard'
 import { VideoForensicsCard } from './components/VideoForensicsCard'
@@ -7,20 +8,56 @@ import { AudioForensicsCard } from './components/AudioForensicsCard'
 import { ProvenanceGraph } from './components/ProvenanceGraph'
 import { ClaimAssessmentCard } from './components/ClaimAssessmentCard'
 import { InvestigationReportModal } from './components/InvestigationReportModal'
-import { analyzeMedia, getDemoInvestigation } from './services/api'
-import type { AnalysisResponse, ClaimAssessment, ModalityType, ProvenanceData } from './types'
+import { LiveFeedRadar } from './components/LiveFeedRadar'
+import { analyzeMedia, auditUrl, getDemoInvestigation } from './services/api'
+import type {
+  AnalysisResponse,
+  ClaimAssessment,
+  ModalityType,
+  ProvenanceData,
+  UnifiedPipelineResponse,
+} from './types'
 import {
   Image as ImageIcon,
   Video,
   Music,
-  Share2,
-  FileCheck2,
+  PlusCircle,
+  Sparkles,
 } from 'lucide-react'
+
+// Reusable Empty State for Forensic Lab Pages
+interface EmptyPageProps {
+  icon: React.ReactNode
+  title: string
+  desc: string
+  onGoIngest: () => void
+  onLoadDemo: () => void
+}
+
+function EmptyPageCard({ icon, title, desc, onGoIngest, onLoadDemo }: EmptyPageProps) {
+  return (
+    <div className="empty-page-card">
+      <div className="empty-icon-box">{icon}</div>
+      <h3 className="empty-title">{title}</h3>
+      <p className="empty-desc">{desc}</p>
+      <div className="empty-actions-row">
+        <button onClick={onGoIngest} className="btn btn-primary">
+          <PlusCircle size={16} />
+          <span>Start New Ingestion</span>
+        </button>
+        <button onClick={onLoadDemo} className="btn btn-secondary">
+          <Sparkles size={16} />
+          <span>Load Demo Showcase</span>
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export function App() {
   const [investigationId, setInvestigationId] = useState<string>('inv-live-preview')
   const [investigationStatus, setInvestigationStatus] = useState<string>('READY')
-  const [activeTab, setActiveTab] = useState<'image' | 'video' | 'audio' | 'provenance' | 'claims'>('image')
+  const [activePage, setActivePage] = useState<NavPage>('radar')
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false)
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false)
 
@@ -41,9 +78,75 @@ export function App() {
     setClaims(demo.claims)
     setInvestigationId(demo.imageAnalysis.analysis_id)
     setInvestigationStatus('COMPLETED')
+    setActivePage('image')
   }
 
-  // Handler: Real Backend Analysis
+  // Helper: Apply Unified Pipeline Result (Mode A or Mode B)
+  const applyPipelineResult = (res: UnifiedPipelineResponse) => {
+    setInvestigationId(res.investigation_id)
+    setInvestigationStatus('COMPLETED')
+
+    if (res.forensic_findings) {
+      setImageAnalysis(res.forensic_findings)
+    }
+
+    if (res.claim_assessments && res.claim_assessments.length > 0) {
+      setClaims(res.claim_assessments)
+    }
+
+    if (res.provenance && res.provenance.dag) {
+      setProvenance({
+        investigation_id: res.investigation_id,
+        is_dag: res.provenance.dag.is_valid_dag,
+        cycle_detected: !res.provenance.dag.is_valid_dag,
+        nodes: res.provenance.dag.nodes || [],
+        edges: (res.provenance.dag.edges || []).map((e: any) => ({
+          id: e.id,
+          source: e.source,
+          target: e.target,
+          relationship_type: e.relationship || 'DERIVED_FROM',
+          confidence: 0.95,
+          basis: e.basis || 'Perceptual hashing & derivation',
+        })),
+        timeline: [
+          {
+            timestamp: new Date().toISOString(),
+            event: 'Ingestion & Triage',
+            entity_id: res.investigation_id,
+            entity_type: 'INVESTIGATION',
+            description: `Automated ${res.mode} verification executed.`,
+          },
+        ],
+      })
+    }
+
+    // Automatically navigate to the most relevant findings page
+    if (res.claim_assessments && res.claim_assessments.length > 0) {
+      setActivePage('claims')
+    } else if (res.forensic_findings) {
+      setActivePage('image')
+    } else {
+      setActivePage('provenance')
+    }
+  }
+
+  // Handler: Mode A URL Audit (oEmbed)
+  const handleAuditUrl = async (url: string) => {
+    setIsAnalyzing(true)
+    setInvestigationStatus('ANALYZING')
+    try {
+      const response = await auditUrl(url)
+      applyPipelineResult(response)
+    } catch (err: any) {
+      console.error(err)
+      setInvestigationStatus('FAILED')
+      throw err
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  // Handler: Direct File Upload
   const handleAnalyze = async (modality: ModalityType, file: File) => {
     if (modality === 'claim') return
     setIsAnalyzing(true)
@@ -56,13 +159,13 @@ export function App() {
 
       if (modality === 'image') {
         setImageAnalysis(response)
-        setActiveTab('image')
+        setActivePage('image')
       } else if (modality === 'video') {
         setVideoAnalysis(response)
-        setActiveTab('video')
+        setActivePage('video')
       } else if (modality === 'audio') {
         setAudioAnalysis(response)
-        setActiveTab('audio')
+        setActivePage('audio')
       }
     } catch (err: any) {
       console.error(err)
@@ -100,77 +203,106 @@ export function App() {
   }
 
   return (
-    <div className="app-layout">
-      {/* Top Header */}
-      <Header
+    <div className="dashboard-container">
+      {/* ── Left Sidebar Navigation ── */}
+      <Sidebar
+        activePage={activePage}
+        onNavigate={setActivePage}
         investigationId={investigationId}
-        status={investigationStatus}
+        investigationStatus={investigationStatus}
+        hasImage={Boolean(imageAnalysis)}
+        hasVideo={Boolean(videoAnalysis)}
+        hasAudio={Boolean(audioAnalysis)}
+        hasProvenance={Boolean(provenance)}
+        claimCount={claims.length}
         onLoadDemo={handleLoadDemo}
         onExportReport={() => setIsReportOpen(true)}
         onExportJson={handleExportJson}
       />
 
-      <main className="main-content">
-        {/* Ingestion & Upload Hub */}
-        <section className="mb-6">
-          <MediaUploader onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
-        </section>
+      {/* ── Right Workspace (Dedicated Page View) ── */}
+      <main className="app-workspace">
+        <TopNav
+          activePage={activePage}
+          investigationId={investigationId}
+          investigationStatus={investigationStatus}
+          onNavigate={setActivePage}
+          onExportReport={() => setIsReportOpen(true)}
+          onExportJson={handleExportJson}
+        />
 
-        {/* Tab Navigation Controls */}
-        <div className="section-tabs">
-          <button
-            className={`sec-tab ${activeTab === 'image' ? 'active' : ''}`}
-            onClick={() => setActiveTab('image')}
-          >
-            <ImageIcon size={18} />
-            <span>Image Forensics</span>
-            {imageAnalysis && <span className="tab-dot" />}
-          </button>
+        <div className="workspace-content">
+          {/* Mode B: Live Feed Radar */}
+          {activePage === 'radar' && (
+            <LiveFeedRadar
+              onAuditComplete={applyPipelineResult}
+              isAuditing={isAnalyzing}
+            />
+          )}
 
-          <button
-            className={`sec-tab ${activeTab === 'video' ? 'active' : ''}`}
-            onClick={() => setActiveTab('video')}
-          >
-            <Video size={18} />
-            <span>Video Forensics</span>
-            {videoAnalysis && <span className="tab-dot" />}
-          </button>
+          {/* Mode A & File Ingestion Gateway */}
+          {activePage === 'ingest' && (
+            <MediaUploader
+              onAnalyze={handleAnalyze}
+              onAuditUrl={handleAuditUrl}
+              isAnalyzing={isAnalyzing}
+            />
+          )}
 
-          <button
-            className={`sec-tab ${activeTab === 'audio' ? 'active' : ''}`}
-            onClick={() => setActiveTab('audio')}
-          >
-            <Music size={18} />
-            <span>Audio Forensics</span>
-            {audioAnalysis && <span className="tab-dot" />}
-          </button>
+          {/* Image Forensics Lab */}
+          {activePage === 'image' && (
+            imageAnalysis ? (
+              <ImageForensicsCard data={imageAnalysis} />
+            ) : (
+              <EmptyPageCard
+                icon={<ImageIcon size={32} className="text-purple" />}
+                title="Image Forensics Laboratory"
+                desc="No image has been analyzed yet in this case. Paste a tweet/post URL using Mode A or upload a JPEG/PNG file in the Ingestion Hub to generate Error Level Analysis heatmaps and ORB copy-move detection masks."
+                onGoIngest={() => setActivePage('ingest')}
+                onLoadDemo={handleLoadDemo}
+              />
+            )
+          )}
 
-          <button
-            className={`sec-tab ${activeTab === 'provenance' ? 'active' : ''}`}
-            onClick={() => setActiveTab('provenance')}
-          >
-            <Share2 size={18} />
-            <span>Provenance &amp; Graph</span>
-            {provenance && <span className="tab-dot" />}
-          </button>
+          {/* Video Forensics Lab */}
+          {activePage === 'video' && (
+            videoAnalysis ? (
+              <VideoForensicsCard data={videoAnalysis} />
+            ) : (
+              <EmptyPageCard
+                icon={<Video size={32} className="text-amber" />}
+                title="Video Forensics Laboratory"
+                desc="No video asset has been analyzed yet. Upload an MP4 or WebM video file to extract keyframes, inspect inter-frame temporal differencing, and analyze 2D spectral FFT energy distributions."
+                onGoIngest={() => setActivePage('ingest')}
+                onLoadDemo={handleLoadDemo}
+              />
+            )
+          )}
 
-          <button
-            className={`sec-tab ${activeTab === 'claims' ? 'active' : ''}`}
-            onClick={() => setActiveTab('claims')}
-          >
-            <FileCheck2 size={18} />
-            <span>Claim Verification</span>
-            {claims.length > 0 && <span className="tab-dot" />}
-          </button>
-        </div>
+          {/* Audio Forensics Lab */}
+          {activePage === 'audio' && (
+            audioAnalysis ? (
+              <AudioForensicsCard data={audioAnalysis} />
+            ) : (
+              <EmptyPageCard
+                icon={<Music size={32} className="text-pink" />}
+                title="Audio Forensics Laboratory"
+                desc="No audio asset has been analyzed yet. Upload a WAV audio stream to generate STFT spectrogram heatmaps, inspect pitch (F0) autocorrelation continuity, and detect acoustic splice discontinuities."
+                onGoIngest={() => setActivePage('ingest')}
+                onLoadDemo={handleLoadDemo}
+              />
+            )
+          )}
 
-        {/* Main Tab Panels */}
-        <div className="tab-panel-container mt-6">
-          {activeTab === 'image' && <ImageForensicsCard data={imageAnalysis} />}
-          {activeTab === 'video' && <VideoForensicsCard data={videoAnalysis} />}
-          {activeTab === 'audio' && <AudioForensicsCard data={audioAnalysis} />}
-          {activeTab === 'provenance' && <ProvenanceGraph data={provenance} />}
-          {activeTab === 'claims' && <ClaimAssessmentCard claims={claims} />}
+          {/* Media Provenance DAG */}
+          {activePage === 'provenance' && (
+            <ProvenanceGraph data={provenance} />
+          )}
+
+          {/* Fact-Verification & Claims Dossier */}
+          {activePage === 'claims' && (
+            <ClaimAssessmentCard claims={claims} />
+          )}
         </div>
       </main>
 

@@ -1,4 +1,4 @@
-import type { AnalysisResponse, ClaimAssessment, HistoricalMatch, ProvenanceData } from '../types'
+import type { AnalysisResponse, ClaimAssessment, FeedItem, HistoricalMatch, ProvenanceData, UnifiedPipelineResponse } from '../types'
 
 const BASE_URL = '/api/v1'
 
@@ -291,4 +291,50 @@ export function getDemoInvestigation(): {
       }
     ]
   }
+}
+
+
+// ---------------------------------------------------------------------------
+// Mode A & Mode B API Integrations
+// ---------------------------------------------------------------------------
+
+export async function auditUrl(url: string, investigation_id?: string): Promise<UnifiedPipelineResponse> {
+  const response = await fetch(`${BASE_URL}/feed/audit-url`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, investigation_id }),
+  })
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`URL Audit failed (${response.status}): ${errorText}`)
+  }
+  return response.json()
+}
+
+export async function getLiveFeed(includeLiveNetwork = true): Promise<FeedItem[]> {
+  const response = await fetch(`${BASE_URL}/feed/live?include_live_network=${includeLiveNetwork}`)
+  if (!response.ok) return []
+  return response.json()
+}
+
+export async function auditFeedPost(itemId: string, feedItem?: FeedItem): Promise<UnifiedPipelineResponse> {
+  const response = await fetch(`${BASE_URL}/feed/audit-post`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ item_id: itemId, feed_item: feedItem }),
+  })
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Feed Audit failed (${response.status}): ${errorText}`)
+  }
+  return response.json()
+}
+
+export async function triggerViralSpike(customClaim?: string): Promise<FeedItem> {
+  const url = customClaim 
+    ? `${BASE_URL}/feed/trigger-spike?custom_claim=${encodeURIComponent(customClaim)}`
+    : `${BASE_URL}/feed/trigger-spike`
+  const response = await fetch(url, { method: 'POST' })
+  if (!response.ok) throw new Error("Failed to trigger viral spike")
+  return response.json()
 }

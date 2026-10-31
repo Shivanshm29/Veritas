@@ -8,6 +8,7 @@ from backend.app.api.v1.endpoints import (
     audio,
     claims,
     evidence,
+    feed,
     health,
     image,
     provenance,
@@ -17,6 +18,7 @@ from backend.app.api.v1.endpoints import (
 
 api_v1_router = APIRouter()
 api_v1_router.include_router(health.router)
+api_v1_router.include_router(feed.router)
 api_v1_router.include_router(assets.router)
 api_v1_router.include_router(claims.router)
 api_v1_router.include_router(evidence.router)

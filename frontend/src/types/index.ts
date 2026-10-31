@@ -76,3 +76,46 @@ export interface ClaimAssessment {
     stance: 'SUPPORTS' | 'REFUTES' | 'NEUTRAL'
   }>
 }
+
+
+export interface FeedItem {
+  id: string
+  platform: string
+  author: string
+  author_handle?: string
+  title: string
+  content: string
+  media_url?: string
+  media_type: 'image' | 'video' | 'audio' | 'text'
+  virality_score: number
+  shares_per_minute: number
+  total_impressions: number
+  is_viral_spike: boolean
+  posted_at: string
+  source_url: string
+  html_embed?: string
+}
+
+export interface UnifiedPipelineResponse {
+  investigation_id: string
+  status: string
+  mode: 'URL_AUDIT' | 'LIVE_FEED_RADAR'
+  source_url?: string
+  source_platform?: string
+  post_metadata?: Record<string, any>
+  claims: any[]
+  claim_assessments: ClaimAssessment[]
+  forensic_findings?: AnalysisResponse
+  provenance?: {
+    fingerprint?: Record<string, any>
+    matches_found?: number
+    matches?: HistoricalMatch[]
+    dag?: {
+      nodes: ProvenanceNode[]
+      edges: ProvenanceEdge[]
+      is_valid_dag: boolean
+    }
+  }
+  verdict_summary: string
+  execution_time_ms: number
+}
