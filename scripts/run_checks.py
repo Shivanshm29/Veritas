@@ -42,10 +42,10 @@ def main():
 
     print("\n================================================================================")
     if all_passed:
-        print("ALL PHASE 0 VERIFICATION CHECKS PASSED.")
+        print("ALL VERIFICATION CHECKS PASSED.")
         sys.exit(0)
     else:
-        print("PHASE 0 VERIFICATION FAILED.")
+        print("VERIFICATION CHECKS FAILED.")
         sys.exit(1)
 
 

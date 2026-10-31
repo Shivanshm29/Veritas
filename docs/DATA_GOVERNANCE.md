@@ -1,14 +1,14 @@
-# PRAMAAN — Data Governance & Privacy Policy
+# Veritas — Data Governance & Privacy Policy
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** Data Governance, Evidence Retention, Privacy & Compliance Policy  
-**Classification:** Digital Forensics Chain of Custody & Privacy Protection  
+> **Project Identity:** Veritas (architecturally designated as PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+> **Document:** Data Governance, Evidence Retention, Privacy & Compliance Policy  
+> **Classification:** Digital Forensics Chain of Custody & Privacy Protection  
 
 ---
 
 ## 1. Principles of Forensic Data Governance
 
-PRAMAAN processes potentially sensitive multimodal media, including broadcast recordings, leaked surveillance, viral social uploads, and biometric facial/voice data. The architecture enforces four core tenets:
+Veritas processes potentially sensitive multimodal media, including broadcast recordings, leaked surveillance, viral social uploads, and biometric facial/voice data. The architecture enforces four core tenets:
 
 1. **Chain of Custody Integrity:** Evidence must be forensically preserved and timestamped without loss of provenance.
 2. **Data Minimization:** Only media features necessary for forensic analysis (audio tracks, keyframe crops, spectrograms, text transcripts) are retained.

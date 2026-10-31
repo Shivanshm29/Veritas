@@ -153,3 +153,23 @@ def test_list_assets_filter(client):
     items = response.json()
     assert len(items) >= 1
     assert all(item["investigation_id"] == inv_id for item in items)
+
+
+def test_upload_duplicate_file_creates_distinct_asset_records(client):
+    """
+    Verifies that uploading the exact same binary content twice creates distinct
+    EvidenceAsset records with distinct IDs while preserving the identical sha256_hash.
+    """
+    file_payload1 = ("duplicate_a.jpg", io.BytesIO(JPEG_HEADER), "image/jpeg")
+    res1 = client.post("/api/v1/assets/upload", files={"file": file_payload1})
+    assert res1.status_code == status.HTTP_201_CREATED
+    data1 = res1.json()
+
+    file_payload2 = ("duplicate_b.jpg", io.BytesIO(JPEG_HEADER), "image/jpeg")
+    res2 = client.post("/api/v1/assets/upload", files={"file": file_payload2})
+    assert res2.status_code == status.HTTP_201_CREATED
+    data2 = res2.json()
+
+    assert data1["id"] != data2["id"]
+    assert data1["sha256_hash"] == data2["sha256_hash"]
+    assert data1["storage_uri"] != data2["storage_uri"]
