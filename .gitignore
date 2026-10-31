@@ -92,3 +92,4 @@ test_run_video.py
 
 sample_audio.wav
 test_run_audio.py
+artifacts/
