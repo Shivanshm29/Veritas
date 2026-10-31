@@ -99,6 +99,12 @@
       ],
       "default": null,
       "title": "Full Text Storage Uri"
+    },
+    "is_simulated": {
+      "default": false,
+      "description": "Flag indicating whether this source is a simulated test fixture",
+      "title": "Is Simulated",
+      "type": "boolean"
     }
   },
   "required": [

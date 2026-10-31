@@ -98,6 +98,17 @@ class EmptyFileError(VeritasException):
         )
 
 
+class EmptyTextError(VeritasException):
+    def __init__(self, detail: str = "Input text is empty or contains only whitespace."):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            title="Empty Text",
+            detail=detail,
+            code="EMPTY_TEXT",
+            error_type="https://veritas.org/errors/EMPTY_TEXT",
+        )
+
+
 class InvalidIdentifierError(VeritasException):
     def __init__(self, identifier: str, expected_format: str):
         super().__init__(
