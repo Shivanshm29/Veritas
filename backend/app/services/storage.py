@@ -136,11 +136,11 @@ class LocalFileStorageService(StorageService):
 
         except BaseException:
             # Ensure temporary file is destroyed on error, abort, or task cancellation
-            if temp_path.exists():
-                try:
+            try:
+                if temp_path.exists():
                     temp_path.unlink()
-                except OSError as err:
-                    logger.warning(f"Failed to remove temporary file {temp_path}: {err}")
+            except Exception as err:
+                logger.warning(f"Failed to remove temporary file {temp_path}: {err}")
             raise
 
     def delete(self, storage_uri: str) -> bool:

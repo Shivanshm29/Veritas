@@ -102,13 +102,29 @@ async def upload_asset(
         repo.create(record)
     except Exception as exc:
         logger.error(f"Database commit failed for asset {asset_id}. Rolling back storage file: {exc}")
-        storage.delete(upload_result.storage_uri)
+        rollback_success = False
+        try:
+            rollback_success = storage.delete(upload_result.storage_uri)
+            if not rollback_success:
+                logger.warning(
+                    f"Storage rollback failed or file missing for asset {asset_id}: {upload_result.storage_uri}"
+                )
+        except Exception as cleanup_err:
+            logger.error(
+                f"Storage rollback encountered error for asset {asset_id} at {upload_result.storage_uri}: {cleanup_err}"
+            )
+
+        detail_msg = (
+            "Failed to record evidence asset metadata in database. Storage write was rolled back."
+            if rollback_success
+            else "Failed to record evidence asset metadata in database. Storage rollback was attempted but file could not be unlinked."
+        )
         raise VeritasException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             title="Asset Ingestion Failed",
-            detail="Failed to record evidence asset metadata in database. Storage write was rolled back.",
+            detail=detail_msg,
             code="INGESTION_PERSISTENCE_ERROR",
-        )
+        ) from exc
 
     logger.info(f"Ingested evidence asset {asset_id} under investigation {investigation_id}")
     return record.to_schema()

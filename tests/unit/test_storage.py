@@ -126,3 +126,31 @@ async def test_save_upload_cleans_up_on_task_cancellation(temp_storage):
 
     assert list(storage_dir.glob(".tmp*")) == []
     assert list(storage_dir.glob("ast_*")) == []
+
+
+@pytest.mark.asyncio
+async def test_save_upload_cancellation_preserves_exception_when_temp_cleanup_fails(temp_storage):
+    """
+    Verifies that if unlinking a temporary file fails (e.g. OS file lock or permission error),
+    the original asyncio.CancelledError is still strictly preserved and re-raised.
+    """
+    import asyncio
+    from unittest.mock import patch
+    service, storage_dir = temp_storage
+
+    class CancellingUploadFile:
+        def __init__(self):
+            self.filename = "cancel_lock.jpg"
+            self.content_type = "image/jpeg"
+            self.chunks_read = 0
+
+        async def read(self, chunk_size):
+            self.chunks_read += 1
+            if self.chunks_read == 1:
+                return b"\xFF\xD8\xFF\xE0\x00\x10JFIF" + b"\x00" * 100
+            raise asyncio.CancelledError("Client disconnected")
+
+    upload = CancellingUploadFile()
+    with patch("pathlib.Path.unlink", side_effect=OSError("File lock held by antivirus")):
+        with pytest.raises(asyncio.CancelledError):
+            await service.save_upload(upload, asset_id="ast_22222222-3333-4444-8555-666666666666")
