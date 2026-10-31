@@ -1,0 +1,579 @@
+{
+  "benchmark_name": "Veritas Phase 4 Evidence-Based Claim Verification Comprehensive Benchmark",
+  "version": "1.0.0",
+  "description": "Standardized benchmark evaluating stance classification, multi-source evidence aggregation, contradiction detection, duplicate handling, and absence-of-evidence safety guardrails.",
+  "epistemic_principles": [
+    "Never equate missing evidence with proof of falsity (absence of evidence is not evidence of absence).",
+    "Never represent uncalibrated heuristic scores as frequentist or Bayesian probabilities.",
+    "Require independent multi-domain corroboration before assigning high verification confidence.",
+    "Discount syndicated duplicates to prevent artificial consensus."
+  ],
+  "cases": [
+    {
+      "id": "bench_001_supported_space",
+      "claim_text": "NASA's James Webb Space Telescope detected atmospheric water vapor on exoplanet WASP-96b.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "NASA officially confirmed that the James Webb Space Telescope has detected distinct atmospheric water vapor signatures in the transmission spectrum of WASP-96b.",
+          "domain": "nasa.gov",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Spectroscopic observations released by the Space Telescope Science Institute verified the presence of clear water vapor absorption lines on WASP-96b.",
+          "domain": "stsci.edu",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Astronomers published independent corroboration showing atmospheric water molecules detected by Webb's NIRISS instrument on WASP-96b.",
+          "domain": "nature.com",
+          "reliability": 0.94,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80,
+        "requires_multi_domain": true
+      }
+    },
+    {
+      "id": "bench_002_refuted_health_hoax",
+      "claim_text": "Drinking boiling seawater cures COVID-19 and neutralizes viral replication.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "The World Health Organization confirmed that claims suggesting drinking seawater cures COVID-19 are dangerous medical misinformation with zero scientific basis.",
+          "domain": "who.int",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Medical experts from the Centers for Disease Control debunked the viral boiling seawater remedy, warning that hypertonic ingestion causes severe dehydration and organ damage.",
+          "domain": "cdc.gov",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Fact-checking investigations disproved viral social media claims alleging boiling salt water kills coronaviruses, designating the claim as completely false.",
+          "domain": "factcheck.org",
+          "reliability": 0.90,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80,
+        "requires_multi_domain": true
+      }
+    },
+    {
+      "id": "bench_003_contradictory_economic_data",
+      "claim_text": "National quarterly manufacturing output expanded by 4.2 percent in Q3 2026.",
+      "category": "FINANCIAL",
+      "expected_verdict": "CONTRADICTORY_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "Department of Commerce provisional estimates confirmed that manufacturing production expanded robustly by 4.2 percent during the third quarter.",
+          "domain": "commerce.gov",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "The Federal Reserve Board's revised industrial production index contradicted early estimates, finding manufacturing output fell by 0.6 percent rather than growing.",
+          "domain": "federalreserve.gov",
+          "reliability": 0.94,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Economists at Reuters reported that conflicting statistical methodologies between Commerce and Federal Reserve data have produced irreconcilable Q3 manufacturing figures.",
+          "domain": "reuters.com",
+          "reliability": 0.90,
+          "stance_hint": "NEUTRAL"
+        }
+      ],
+      "evaluation_criteria": {
+        "requires_conflicting_points": true
+      }
+    },
+    {
+      "id": "bench_004_insufficient_missing_evidence",
+      "claim_text": "An anonymous collector in Zurich purchased an undisclosed Caravaggio manuscript for twelve bitcoin in 2021.",
+      "category": "GENERAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [],
+      "evaluation_criteria": {
+        "strict_guardrail": "never_refute_on_absence",
+        "max_confidence": 0.10
+      }
+    },
+    {
+      "id": "bench_005_insufficient_ambiguous_evidence",
+      "claim_text": "The mayor will announce a sudden resignation at 4 PM tomorrow afternoon.",
+      "category": "POLITICAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "City hall reporters noted that rumors regarding the mayor's personal plans remain unconfirmed and highly speculative.",
+          "domain": "localnews.com",
+          "reliability": 0.60,
+          "stance_hint": "INSUFFICIENT"
+        },
+        {
+          "text": "The mayor's chief of staff stated that tomorrow's schedule includes normal public municipal meetings and pending routine agenda items.",
+          "domain": "citygov.org",
+          "reliability": 0.75,
+          "stance_hint": "NEUTRAL"
+        }
+      ],
+      "evaluation_criteria": {
+        "abstention_expected": true
+      }
+    },
+    {
+      "id": "bench_006_syndicated_duplicate_discounting",
+      "claim_text": "Archeologists discovered a 3,000-year-old bronze chariot in the Aegean seabed.",
+      "category": "GENERAL",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "Maritime archeologists confirmed the discovery of an intact 3,000-year-old bronze chariot off the coast of Rhodes during an underwater expedition.",
+          "domain": "reuters.com",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Maritime archeologists confirmed the discovery of an intact 3,000-year-old bronze chariot off the coast of Rhodes during an underwater expedition.",
+          "domain": "syndicatednews1.com",
+          "reliability": 0.60,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Maritime archeologists confirmed the discovery of an intact 3,000-year-old bronze chariot off the coast of Rhodes during an underwater expedition.",
+          "domain": "syndicatednews2.com",
+          "reliability": 0.55,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Maritime archeologists confirmed the discovery of an intact 3,000-year-old bronze chariot off the coast of Rhodes during an underwater expedition.",
+          "domain": "syndicatednews3.com",
+          "reliability": 0.50,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "requires_duplicate_detection": true
+      }
+    },
+    {
+      "id": "bench_007_low_credibility_untrusted_sources",
+      "claim_text": "Secret volcanic tunnels beneath the capital are being converted into alien storage pods.",
+      "category": "GENERAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "Anonymous forum users claimed that mysterious subterranean drilling is preparing alien pods beneath downtown subway lines.",
+          "domain": "unverifiedblog.xyz",
+          "reliability": 0.20,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Conspiracy channels asserted that volcanic tunnel construction is secret alien infrastructure according to unverified leaks.",
+          "domain": "ufoforum.org",
+          "reliability": 0.15,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "must_not_support_from_low_credibility": true,
+        "max_confidence": 0.40
+      }
+    },
+    {
+      "id": "bench_008_refuted_fabricated_speech",
+      "claim_text": "The Prime Minister announced the complete elimination of all national income taxes starting Monday.",
+      "category": "POLITICAL",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "Ministry of Finance official statements verified that viral claims alleging the elimination of income taxes are entirely false and fabricated.",
+          "domain": "mof.gov",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Fact-checking journalists debunked the synthetic video claiming tax abolition, confirming that no such announcement was made by the Prime Minister.",
+          "domain": "fullfact.org",
+          "reliability": 0.92,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.75
+      }
+    },
+    {
+      "id": "bench_009_supported_climate_metrics",
+      "claim_text": "Global average ocean surface temperatures reached record highs in July 2024.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "The Copernicus Climate Change Service verified that global average sea surface temperatures reached an unprecedented high in July 2024.",
+          "domain": "copernicus.eu",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "NOAA confirmed that July 2024 global ocean temperatures broke all previously recorded observational records in modern history.",
+          "domain": "noaa.gov",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80,
+        "requires_multi_domain": true
+      }
+    },
+    {
+      "id": "bench_010_refuted_microchip_vaccine",
+      "claim_text": "Routine tetanus vaccines contain subcutaneous RFID microchips for civilian tracking.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "Extensive biomedical lab testing confirmed that rumors of RFID microchips in vaccines are completely false, fabricated, and scientifically impossible.",
+          "domain": "who.int",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Independent medical oversight bodies debunked social media assertions regarding tracking chips, confirming standard vaccines contain only immunizing antigens.",
+          "domain": "snopes.com",
+          "reliability": 0.90,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.75
+      }
+    },
+    {
+      "id": "bench_011_contradictory_casualty_reports",
+      "claim_text": "The industrial warehouse explosion in the eastern port district resulted in thirty fatalities.",
+      "category": "DISASTER",
+      "expected_verdict": "CONTRADICTORY_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "Local regional hospital directors confirmed that thirty deceased victims were recovered from the warehouse blast perimeter.",
+          "domain": "regionalnews.com",
+          "reliability": 0.85,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "National civil defense authorities denied thirty fatalities, releasing verified morgue records showing only two people died in the explosion.",
+          "domain": "civildefense.gov",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "requires_conflicting_points": true
+      }
+    },
+    {
+      "id": "bench_012_insufficient_celebrity_gossip",
+      "claim_text": "A famous pop singer secretly signed a multimillion-dollar recording contract in Tokyo.",
+      "category": "CELEBRITY_IDENTITY",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "Tabloid blogs wondered whether recent travel photos hint at possible future international projects in Japan.",
+          "domain": "popbuzz.com",
+          "reliability": 0.40,
+          "stance_hint": "INSUFFICIENT"
+        }
+      ],
+      "evaluation_criteria": {
+        "abstention_expected": true
+      }
+    },
+    {
+      "id": "bench_013_supported_who_eradication",
+      "claim_text": "Wild poliovirus type 2 was officially certified as eradicated globally by the World Health Organization in 2015.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "The World Health Organization officially confirmed the global eradication of wild poliovirus type 2 in September 2015.",
+          "domain": "who.int",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "CDC records verified that the Global Commission for the Certification of Poliomyelitis Eradication declared type 2 wild polio eradicated in 2015.",
+          "domain": "cdc.gov",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_014_refuted_eiffel_tower_fire",
+      "claim_text": "The Eiffel Tower in Paris burned down completely during overnight riots.",
+      "category": "DISASTER",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "Paris fire department officials verified that viral videos of the Eiffel Tower engulfed in flames are AI-generated deepfakes and entirely false.",
+          "domain": "lemonde.fr",
+          "reliability": 0.92,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Reuters debunked viral posts showing the destruction of the Eiffel Tower, confirming live camera feeds show the monument undamaged.",
+          "domain": "reuters.com",
+          "reliability": 0.92,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_015_insufficient_zero_sources_rule",
+      "claim_text": "A sixteenth-century Dutch galleon was discovered buried under an Iowa cornfield.",
+      "category": "GENERAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [],
+      "evaluation_criteria": {
+        "strict_guardrail": "never_refute_on_absence",
+        "max_confidence": 0.10
+      }
+    },
+    {
+      "id": "bench_016_supported_central_bank_rates",
+      "claim_text": "The European Central Bank reduced its key deposit facility rate by 25 basis points in June 2024.",
+      "category": "FINANCIAL",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "The European Central Bank announced and verified a 25 basis point reduction in its key interest rates following the June 2024 Governing Council meeting.",
+          "domain": "ecb.europa.eu",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Financial Times reported that the ECB confirmed its deposit facility rate was lowered from 4.00 percent to 3.75 percent.",
+          "domain": "ft.com",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_017_refuted_fake_celebrity_death",
+      "claim_text": "Legendary actor Morgan Freeman passed away peacefully at his Mississippi residence this morning.",
+      "category": "CELEBRITY_IDENTITY",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "Morgan Freeman's management team confirmed the actor is alive and healthy, debunking the viral death hoax circulating online as false.",
+          "domain": "apnews.com",
+          "reliability": 0.94,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Fact-checking journalists disproved recurring death rumors, confirming the actor attended a public film festival yesterday.",
+          "domain": "snopes.com",
+          "reliability": 0.90,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_018_contradictory_unemployment_figures",
+      "claim_text": "Statewide unemployment dropped to an all-time low of 2.1 percent in August.",
+      "category": "FINANCIAL",
+      "expected_verdict": "CONTRADICTORY_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "The governor's press release confirmed that household survey statistics placed statewide unemployment at a historic low of 2.1 percent.",
+          "domain": "state.gov",
+          "reliability": 0.90,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "The Bureau of Labor Statistics refuted the 2.1 percent figure, releasing audited establishment data showing unemployment remained at 4.6 percent.",
+          "domain": "bls.gov",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "requires_conflicting_points": true
+      }
+    },
+    {
+      "id": "bench_019_insufficient_unindexed_local_dispute",
+      "claim_text": "A small neighborhood bakery in Lyon changed its traditional sourdough yeast strain in 1982.",
+      "category": "GENERAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [],
+      "evaluation_criteria": {
+        "strict_guardrail": "never_refute_on_absence"
+      }
+    },
+    {
+      "id": "bench_020_supported_chandrayaan3_landing",
+      "claim_text": "India's Chandrayaan-3 lander successfully touched down near the lunar south pole in August 2023.",
+      "category": "GENERAL",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "The Indian Space Research Organisation confirmed the successful soft landing of Chandrayaan-3 near the moon's south pole on August 23, 2023.",
+          "domain": "isro.gov.in",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "BBC News verified that India became the first nation to land a spacecraft near the lunar south pole following telemetry confirmation.",
+          "domain": "bbc.com",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_021_refuted_sun_extinction_hoax",
+      "claim_text": "NASA announced that the Sun will go dark for seven consecutive days in November.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "NASA astrophysicists confirmed that viral rumors of a seven-day global solar blackout are a recurrent hoax with zero truth.",
+          "domain": "nasa.gov",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Fact-checking organizations debunked the purported solar blackout alert, confirming NASA issued no such warning.",
+          "domain": "politifact.com",
+          "reliability": 0.90,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_022_syndicated_duplicate_news_cluster",
+      "claim_text": "A rare albino dolphin calf was spotted swimming off the coast of Louisiana.",
+      "category": "GENERAL",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "Wildlife biologists confirmed the sighting of a rare albino dolphin calf swimming alongside its mother in Louisiana waters.",
+          "domain": "nationalgeographic.com",
+          "reliability": 0.92,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Wildlife biologists confirmed the sighting of a rare albino dolphin calf swimming alongside its mother in Louisiana waters.",
+          "domain": "reprintone.org",
+          "reliability": 0.60,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "Wildlife biologists confirmed the sighting of a rare albino dolphin calf swimming alongside its mother in Louisiana waters.",
+          "domain": "reprinttwo.org",
+          "reliability": 0.55,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "requires_duplicate_detection": true
+      }
+    },
+    {
+      "id": "bench_023_insufficient_unsubstantiated_tech_leak",
+      "claim_text": "A major smartphone manufacturer will replace glass touchscreens with synthetic sapphire in next month's launch.",
+      "category": "GENERAL",
+      "expected_verdict": "INSUFFICIENT_EVIDENCE",
+      "evidence_items": [
+        {
+          "text": "Tech forums debated speculative supply chain rumors regarding potential future display materials.",
+          "domain": "techrumors.net",
+          "reliability": 0.40,
+          "stance_hint": "INSUFFICIENT"
+        }
+      ],
+      "evaluation_criteria": {
+        "abstention_expected": true
+      }
+    },
+    {
+      "id": "bench_024_supported_ozone_layer_recovery",
+      "claim_text": "The United Nations scientific assessment confirmed that the Earth's ozone layer is on track to recover within decades.",
+      "category": "PUBLIC_HEALTH",
+      "expected_verdict": "SUPPORTED",
+      "evidence_items": [
+        {
+          "text": "A UN-backed quadrennial scientific panel verified that ozone-depleting substances have declined, setting the ozone layer on course for full recovery by 2066.",
+          "domain": "unep.org",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        },
+        {
+          "text": "The World Meteorological Organization confirmed that phaseouts under the Montreal Protocol are successfully healing the Antarctic ozone hole.",
+          "domain": "wmo.int",
+          "reliability": 0.95,
+          "stance_hint": "SUPPORTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    },
+    {
+      "id": "bench_025_refuted_lunar_water_ban",
+      "claim_text": "The United Nations passed a binding resolution declaring lunar water extraction illegal under international maritime law.",
+      "category": "POLITICAL",
+      "expected_verdict": "REFUTED",
+      "evidence_items": [
+        {
+          "text": "United Nations Committee on the Peaceful Uses of Outer Space records disproved claims of a water mining ban, confirming the 1967 Outer Space Treaty governs celestial bodies, not maritime law.",
+          "domain": "unoosa.org",
+          "reliability": 0.95,
+          "stance_hint": "CONTRADICTS"
+        },
+        {
+          "text": "Legal scholars at Reuters verified that no UN resolution has banned water extraction on the moon, labeling the viral claim as false.",
+          "domain": "reuters.com",
+          "reliability": 0.92,
+          "stance_hint": "CONTRADICTS"
+        }
+      ],
+      "evaluation_criteria": {
+        "min_confidence": 0.80
+      }
+    }
+  ]
+}
