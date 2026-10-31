@@ -1,14 +1,14 @@
-# PRAMAAN — Project Roadmap (Phase 0 – Phase 13)
+# Veritas — Project Roadmap (Phase 0 – Phase 13)
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** Fixed System Roadmap & Ownership Matrix  
-**Status:** Approved & Frozen Baseline  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** Fixed System Roadmap & Ownership Matrix  
+> **Status:** Approved & Frozen Baseline  
 
 ---
 
 ## 1. Development Principles & Division of Ownership
 
-PRAMAAN is built under a contract-first, modular architecture designed for independent multi-agent and multi-developer execution. The system features two independent engineering owners:
+Veritas is built under a contract-first, modular architecture designed for independent multi-agent and multi-developer execution. The system features two independent engineering owners:
 
 - **Person 1 (My Ownership):**
   - Data Ingestion & Evidence Asset Management

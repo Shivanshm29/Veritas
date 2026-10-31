@@ -1,9 +1,9 @@
-# PRAMAAN — Project Charter
+# Veritas — Project Charter
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** Project Charter & Operational Mandate  
-**Classification:** Open Architecture / Forensic Standards  
-**Target Delivery:** High-Trust Multimodal Digital Authenticity & Claim Verification  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** Project Charter & Operational Mandate  
+> **Classification:** Open Architecture / Forensic Standards  
+> **Target Delivery:** High-Trust Multimodal Digital Authenticity & Claim Verification  
 
 ---
 
@@ -20,7 +20,7 @@ Current verification solutions suffer from three fundamental architectural flaws
 
 ## 2. Project Goals & Vision
 
-**PRAMAAN** solves these challenges by combining state-of-the-art **multimodal media forensics**, **automated claim intelligence**, **retrieval-grounded source verification**, and an **immutable provenance graph**.
+**Veritas** solves these challenges by combining state-of-the-art **multimodal media forensics**, **automated claim intelligence**, **retrieval-grounded source verification**, and an **immutable provenance graph**.
 
 ### Core Objectives
 1. **Decoupled, Reliable Architecture:** Establish an independent, modular architecture enabling Person 1 (Ingestion & Claims) and Person 2 (Forensics & Workspace) to develop and test without cross-system runtime coupling.

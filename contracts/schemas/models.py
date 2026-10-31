@@ -1,5 +1,5 @@
 """
-Canonical Pydantic v2 Models for PRAMAAN.
+Canonical Pydantic v2 Models for Veritas.
 
 Shared contracts between Person 1 (Ingestion & Claims) and Person 2 (Forensics & Workspace).
 """
@@ -272,7 +272,7 @@ class Investigation(VeritasBaseModel):
         return validate_prefixed_id(v, EntityPrefix.INVESTIGATION)
 
 
-class EvidenceAsset(PramaanBaseModel):
+class EvidenceAsset(VeritasBaseModel):
     """Model 2: Primary immutable evidence file."""
     id: str = Field(..., description="ID with format ast_<uuid4>")
     investigation_id: str
@@ -308,7 +308,7 @@ class EvidenceAsset(PramaanBaseModel):
         return v
 
 
-class AssetDerivation(PramaanBaseModel):
+class AssetDerivation(VeritasBaseModel):
     """Model 3: Records derived child assets (keyframes, audio tracks)."""
     id: str = Field(..., description="ID with format drv_<uuid4>")
     parent_asset_id: str
@@ -344,7 +344,7 @@ class AssetDerivation(PramaanBaseModel):
         return self
 
 
-class ProcessingResult(PramaanBaseModel):
+class ProcessingResult(VeritasBaseModel):
     """Model 4: Algorithmic processing output (OCR, ASR, embeddings)."""
     id: str = Field(..., description="ID with format res_<uuid4>")
     asset_id: str
@@ -376,7 +376,7 @@ class ProcessingResult(PramaanBaseModel):
         return self
 
 
-class Claim(PramaanBaseModel):
+class Claim(VeritasBaseModel):
     """Model 5: Verifiable factual assertion extracted from media."""
     id: str = Field(..., description="ID with format clm_<uuid4>")
     investigation_id: str
@@ -417,7 +417,7 @@ class Claim(PramaanBaseModel):
         return self
 
 
-class SourceDocument(PramaanBaseModel):
+class SourceDocument(VeritasBaseModel):
     """Model 6: External reference material retrieved during verification."""
     id: str = Field(..., description="ID with format doc_<uuid4>")
     title: str = Field(..., min_length=1)
@@ -438,7 +438,7 @@ class SourceDocument(PramaanBaseModel):
         return validate_prefixed_id(v, EntityPrefix.SOURCE_DOCUMENT)
 
 
-class EvidenceItem(PramaanBaseModel):
+class EvidenceItem(VeritasBaseModel):
     """Model 7: Specific passage from a source document evaluated against a claim."""
     id: str = Field(..., description="ID with format evi_<uuid4>")
     claim_id: str
@@ -467,7 +467,7 @@ class EvidenceItem(PramaanBaseModel):
         return validate_prefixed_id(v, EntityPrefix.SOURCE_DOCUMENT)
 
 
-class ClaimAssessment(PramaanBaseModel):
+class ClaimAssessment(VeritasBaseModel):
     """Model 8: Synthesized semantic factuality assessment of a claim."""
     id: str = Field(..., description="ID with format asm_<uuid4>")
     investigation_id: str
@@ -511,7 +511,7 @@ class ClaimAssessment(PramaanBaseModel):
         return self
 
 
-class ForensicFinding(PramaanBaseModel):
+class ForensicFinding(VeritasBaseModel):
     """Model 9: Signal manipulation detection finding from Person 2's forensic engines."""
     id: str = Field(..., description="ID with format fnd_<uuid4>")
     investigation_id: str
@@ -595,7 +595,7 @@ class ForensicFinding(PramaanBaseModel):
         return self
 
 
-class ProvenanceRelationship(PramaanBaseModel):
+class ProvenanceRelationship(VeritasBaseModel):
     """Model 10: Directed relationship edge in the provenance graph."""
     id: str = Field(..., description="ID with format rel_<uuid4>")
     investigation_id: str
@@ -634,7 +634,7 @@ class ProvenanceRelationship(PramaanBaseModel):
         return self
 
 
-class InvestigationReport(PramaanBaseModel):
+class InvestigationReport(VeritasBaseModel):
     """Model 11: Final structured investigative report."""
     id: str = Field(..., description="ID with format rpt_<uuid4>")
     investigation_id: str
@@ -675,7 +675,7 @@ class InvestigationReport(PramaanBaseModel):
         return v
 
 
-class AuditEvent(PramaanBaseModel):
+class AuditEvent(VeritasBaseModel):
     """Model 12: Immutable cryptographic audit trail record."""
     id: str = Field(..., description="ID with format adt_<uuid4>")
     investigation_id: str

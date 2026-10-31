@@ -1,5 +1,5 @@
 """
-PRAMAAN Shared Canonical Contracts Specification.
+Veritas Shared Canonical Contracts Specification.
 
 This package defines the 12 canonical Pydantic v2 data models shared across
 Person 1 (Ingestion, Normalization, Claim Intelligence, Source Verification)

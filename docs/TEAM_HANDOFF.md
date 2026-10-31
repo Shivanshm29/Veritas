@@ -10,7 +10,7 @@
 
 ## 1. Welcome & Collaboration Overview
 
-Welcome to **Veritas** (PRAMAAN)! This document provides everything you need to clone the repository, configure your environment, consume shared contracts independently, and begin developing your assigned modules on your independent machine.
+Welcome to **Veritas**! This document provides everything you need to clone the repository, configure your environment, consume shared contracts independently, and begin developing your assigned modules on your independent machine.
 
 You do **not** need to run Person 1's backend API, database, or worker processes to build and test your modules. Everything is decoupled contract-first.
 

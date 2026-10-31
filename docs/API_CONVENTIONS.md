@@ -1,8 +1,9 @@
-# PRAMAAN — API & Contract Conventions
+# Veritas — API & Contract Conventions
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** API Design Standards, Serialization Conventions & Wire Protocol  
-**Compliance Standard:** RFC 9457 (Problem Details), ISO 8601 (Time), SemVer 2.0 (Versioning)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** API Design Standards, Serialization Conventions & Wire Protocol  
+> **Compliance Standard:** RFC 9457 (Problem Details), ISO 8601 (Time), SemVer 2.0 (Versioning)  
+> **Backward Compatibility Note:** Technical identifiers such as `PramaanBaseModel` and `PramaanException` are preserved as aliases for backward compatibility.  
 
 ---
 
@@ -66,7 +67,7 @@ All error responses (HTTP status codes 400 to 599) must be returned in RFC 9457 
 
 ```json
 {
-  "type": "https://pramaan.org/errors/RESOURCE_NOT_FOUND",
+  "type": "https://veritas.org/errors/RESOURCE_NOT_FOUND",
   "title": "Resource Not Found",
   "status": 404,
   "detail": "EvidenceAsset with id 'ast_23456789-2345-4345-8345-234567890bcd' does not exist.",
@@ -79,7 +80,7 @@ All error responses (HTTP status codes 400 to 599) must be returned in RFC 9457 
 
 ### Common HTTP Status Codes
 
-| Code | Meaning | Usage in PRAMAAN |
+| Code | Meaning | Usage in Veritas |
 | :--- | :--- | :--- |
 | **200 OK** | Success | Synchronous reads (`GET`) and idempotent updates (`PUT`). |
 | **201 Created** | Resource Created | Synchronous resource creation (`POST /investigations`). |

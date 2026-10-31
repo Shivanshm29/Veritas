@@ -1,14 +1,14 @@
-# PRAMAAN — Test Strategy & Verification Protocol
+# Veritas — Test Strategy & Verification Protocol
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** Test Strategy, Verification Gates & Quality Assurance Standards  
-**Target:** 100% Deterministic, Decoupled, Multi-Dimensional Testing  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** Test Strategy, Verification Gates & Quality Assurance Standards  
+> **Target:** 100% Deterministic, Decoupled, Multi-Dimensional Testing  
 
 ---
 
 ## 1. Quality Assurance Philosophy
 
-PRAMAAN enforces an uncompromising testing discipline:
+Veritas enforces an uncompromising testing discipline:
 - **No Mocking of Real Truth in Evaluation:** Mocks are strictly reserved for isolated unit tests and external test doubles. In later AI evaluation phases, real detectors must be evaluated on real labeled datasets.
 - **Zero Inter-Developer Coupling:** Every test suite must execute cleanly on a single developer workstation without requiring the peer developer's backend, database, or network services.
 - **Fail Early, Fail Safely:** Malformed inputs or dependency failures must yield clean RFC 9457 error messages and must never silently corrupt database state or emit false positive verdicts.
@@ -19,7 +19,7 @@ PRAMAAN enforces an uncompromising testing discipline:
 
 ```mermaid
 flowchart TD
-    subgraph Pyramid["PRAMAAN Test Pyramid"]
+    subgraph Pyramid["Veritas Test Pyramid"]
         T1["1. Unit Tests (Validators, Enums, Transformations, Helpers)"]
         T2["2. API & Router Tests (FastAPI routes, HTTP status codes, Query params)"]
         T3["3. Contract Tests (Pydantic v2 schemas, JSON Schema, Fixture validation)"]

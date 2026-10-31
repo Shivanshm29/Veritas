@@ -1,11 +1,12 @@
-# PRAMAAN — Phase 0 Review: Project Foundation & Architecture
+# Veritas — Phase 0 Review: Project Foundation & Architecture
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Phase:** Phase 0 — Project Foundation & Architecture  
 **Subsystem:** Person 1 (Backend Core, Shared Contracts, Ingestion & Verification Foundation)  
 **Date:** October 31, 2026  
 **Auditor / Engineer:** Senior Software Architect, Python Backend Engineer, API Engineer & QA Engineer  
 **Document Path:** `reviews/phase-0-review.md`  
+**Legacy Compatibility Note:** `PramaanBaseModel` and `PramaanException` are preserved strictly as legacy aliases for backward compatibility with existing contract consumers; they do not represent the project's official identity.
 
 ---
 
@@ -238,9 +239,9 @@ During the Phase 0 audit review, two specific contract-design issues were flagge
 ## 9. Infrastructure Configuration & Live Service Limitations
 
 - `infra/docker-compose.yml` defines isolated development containers:
-  - `postgres` (PostgreSQL 16 Alpine, port 5432, `pg_isready` health check, persistent volume `pramaan_pgdata`).
-  - `redis` (Redis 7 Alpine, port 6379, `redis-cli ping` health check, persistent volume `pramaan_redisdata`).
-  - `minio` (MinIO S3 storage, ports 9000 & 9001, persistent volume `pramaan_miniodata`).
+  - `postgres` (PostgreSQL 16 Alpine, port 5432, `pg_isready` health check, persistent volume `veritas_pgdata`).
+  - `redis` (Redis 7 Alpine, port 6379, `redis-cli ping` health check, persistent volume `veritas_redisdata`).
+  - `minio` (MinIO S3 storage, ports 9000 & 9001, persistent volume `veritas_miniodata`).
 - **Live Infrastructure Status:**
   - **Docker CLI:** `Docker version 29.7.2` installed, but the local Docker Desktop Linux daemon is **offline** (`failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine`).
   - **Local Host Ports:** Port 5432 responded to TCP handshake (local service); ports 6379 (Redis) and 9000 (MinIO) were **unreachable**.
@@ -303,7 +304,7 @@ tests/unit/test_core_models.py::test_forensic_finding_calibrated_requires_score_
 tests/unit/test_core_models.py::test_forensic_finding_calibrated_bounds PASSED
 tests/unit/test_forensic_finding_uncalibrated_rejects_calibrated_score PASSED
 tests/unit/test_core_models.py::test_provenance_relationship_self_loop_prevented PASSED
-tests/unit/test_errors.py::test_pramaan_exception_defaults PASSED
+tests/unit/test_errors.py::test_veritas_exception_defaults PASSED
 tests/unit/test_errors.py::test_resource_not_found_error PASSED
 tests/unit/test_errors.py::test_service_unavailable_error PASSED
 tests/unit/test_errors.py::test_problem_detail_serialization PASSED

@@ -1,14 +1,14 @@
-# PRAMAAN — Threat Model & Security Architecture
+# Veritas — Threat Model & Security Architecture
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** Threat Model, Attack Surface Analysis & Mitigation Strategy  
-**Standard:** STRIDE Framework & OWASP Top 10 API Security Risks  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** Threat Model, Attack Surface Analysis & Mitigation Strategy  
+> **Standard:** STRIDE Framework & OWASP Top 10 API Security Risks  
 
 ---
 
 ## 1. Threat Modeling Overview
 
-As a deepfake analysis and provenance verification network, PRAMAAN is an attractive target for adversaries seeking to:
+As a deepfake analysis and provenance verification network, Veritas is an attractive target for adversaries seeking to:
 1. Bypass detection to disseminate synthetic disinformation without detection.
 2. Sabotage forensic pipelines via poisoned inputs or malicious payloads.
 3. Exfiltrate sensitive whistleblower evidence or investigator notes.

@@ -1,15 +1,15 @@
-# PRAMAAN — System Architecture Specification
+# Veritas — System Architecture Specification
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
-**Document:** System Architecture & Technical Design Specification  
-**Focus:** Person 1 Backend Architecture & Cross-System Integration  
-**Version:** 1.0.0 (Phase 0 Baseline)  
+> **Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
+> **Document:** System Architecture & Technical Design Specification  
+> **Focus:** Person 1 Backend Architecture & Cross-System Integration  
+> **Version:** 1.0.0  
 
 ---
 
 ## 1. Architectural Overview
 
-PRAMAAN operates as an asynchronous, event-driven, contract-first network. The system architecture segregates responsibilities cleanly between **Person 1** (Ingestion, Normalization, Claim Intelligence, and Retrieval Verification) and **Person 2** (Multimodal Media Forensics, Provenance Graph Synthesis, and Investigator Workspace).
+Veritas operates as an asynchronous, event-driven, contract-first network. The system architecture segregates responsibilities cleanly between **Person 1** (Ingestion, Normalization, Claim Intelligence, and Retrieval Verification) and **Person 2** (Multimodal Media Forensics, Provenance Graph Synthesis, and Investigator Workspace).
 
 ```mermaid
 flowchart TD
@@ -77,7 +77,7 @@ flowchart TD
 ### 2.2 Core Infrastructure & Configuration (`backend/app/core/`)
 - **Centralized Settings (`config.py`):** Derived from `pydantic-settings.BaseSettings`, reading from environment variables or `.env`.
 - **Structured Logging (`logging.py`):** JSON-formatted logs with correlation IDs, masking sensitive tokens, passwords, and PII.
-- **Error Handlers (`errors.py`):** Global exception interceptors for `RequestValidationError`, `SQLAlchemyError`, and `PramaanException`.
+- **Error Handlers (`errors.py`):** Global exception interceptors for `RequestValidationError`, `StarletteHTTPException`, and `VeritasException` (with backward-compatible `PramaanException` alias).
 
 ### 2.3 Database & Persistence Layer (`backend/app/db/`)
 - Relational mapping using **SQLAlchemy 2.0** with explicit typing and declarative base models.

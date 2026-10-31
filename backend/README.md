@@ -39,7 +39,22 @@ uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-## 3. Running Backend Tests
+## 3. Evidence Asset Endpoints (Phase 1)
+
+- **Upload Asset:** `POST http://localhost:8000/api/v1/assets/upload`  
+  Accepts multipart/form-data (`file`, optional `investigation_id`, `source_url`, `source_platform`, `captured_at`).  
+  Performs bounded chunk streaming, concurrent SHA-256 calculation, magic-byte MIME validation, and atomic filesystem storage.  
+  Returns: `201 Created` with canonical `EvidenceAsset` payload.
+
+- **Get Asset Metadata:** `GET http://localhost:8000/api/v1/assets/{asset_id}`  
+  Returns metadata for `asset_id` (e.g. `ast_<uuid4>`). Returns RFC 9457 Problem Details on 404 or 422.
+
+- **List Assets:** `GET http://localhost:8000/api/v1/assets?investigation_id={inv_id}`  
+  Lists assets optionally filtered by investigation ID.
+
+---
+
+## 4. Running Backend Tests
 
 ```bash
 pytest backend/tests -v
