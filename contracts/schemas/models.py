@@ -438,6 +438,7 @@ class SourceDocument(VeritasBaseModel):
     content_sha256: str = Field(..., pattern=r"^[0-9a-f]{64}$")
     source_reliability_score: Optional[float] = Field(None, ge=0.0, le=1.0)
     full_text_storage_uri: Optional[str] = None
+    is_simulated: bool = Field(False, description="Flag indicating whether this source is a simulated test fixture")
 
     @field_validator("id")
     @classmethod
