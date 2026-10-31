@@ -11,6 +11,7 @@ from backend.app.api.v1.endpoints import (
     health,
     image,
     provenance,
+    verification,
     video,
 )
 
@@ -19,6 +20,7 @@ api_v1_router.include_router(health.router)
 api_v1_router.include_router(assets.router)
 api_v1_router.include_router(claims.router)
 api_v1_router.include_router(evidence.router)
+api_v1_router.include_router(verification.router)
 api_v1_router.include_router(image.router)
 api_v1_router.include_router(video.router)
 api_v1_router.include_router(audio.router)

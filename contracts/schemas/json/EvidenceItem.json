@@ -4,6 +4,7 @@
       "enum": [
         "SUPPORTS",
         "REFUTES",
+        "CONTRADICTS",
         "NEUTRAL",
         "INSUFFICIENT"
       ],

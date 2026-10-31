@@ -125,6 +125,7 @@ class ClaimCategory(str, Enum):
 class EvidenceStance(str, Enum):
     SUPPORTS = "SUPPORTS"
     REFUTES = "REFUTES"
+    CONTRADICTS = "CONTRADICTS"
     NEUTRAL = "NEUTRAL"
     INSUFFICIENT = "INSUFFICIENT"
 
