@@ -1,4 +1,4 @@
-name: PRAMAAN Backend & Contract CI
+name: Veritas Backend & Contract CI
 
 on:
   push:

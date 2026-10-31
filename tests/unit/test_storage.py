@@ -100,3 +100,29 @@ async def test_delete_stored_file(temp_storage):
     deleted = service.delete(res.storage_uri)
     assert deleted is True
     assert not res.file_path.exists()
+
+
+@pytest.mark.asyncio
+async def test_save_upload_cleans_up_on_task_cancellation(temp_storage):
+    """Verifies that asyncio.CancelledError during chunk streaming unlinks temp files."""
+    import asyncio
+    service, storage_dir = temp_storage
+
+    class CancellingUploadFile:
+        def __init__(self):
+            self.filename = "cancel.jpg"
+            self.content_type = "image/jpeg"
+            self.chunks_read = 0
+
+        async def read(self, chunk_size):
+            self.chunks_read += 1
+            if self.chunks_read == 1:
+                return b"\xFF\xD8\xFF\xE0\x00\x10JFIF" + b"\x00" * 100
+            raise asyncio.CancelledError("Client disconnected")
+
+    upload = CancellingUploadFile()
+    with pytest.raises(asyncio.CancelledError):
+        await service.save_upload(upload, asset_id="ast_11111111-2222-4333-8444-555555555555")
+
+    assert list(storage_dir.glob(".tmp*")) == []
+    assert list(storage_dir.glob("ast_*")) == []

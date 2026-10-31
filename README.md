@@ -236,7 +236,7 @@ Load synthetic test doubles from `contracts/fixtures/`:
 | **Worker Subsystem Scaffold** | `IMPLEMENTED` | `InMemoryTaskRunner` for non-blocking asynchronous task execution without Redis. |
 | **Phase 1 Ingestion** | `IMPLEMENTED` | Bounded chunk streaming, SHA-256 calculation, magic-byte MIME validation, atomic file storage, path traversal defense, transactional storage rollback on DB failure. |
 | **Evidence Asset API** | `IMPLEMENTED` | `POST /api/v1/assets/upload`, `GET /api/v1/assets/{asset_id}`, `GET /api/v1/assets`. |
-| **Automated Tests** | `IMPLEMENTED` | **107 passing tests** across unit, contract, API, integration, and security suites. |
+| **Automated Tests** | `IMPLEMENTED` | **108 passing tests** across unit, contract, API, integration, and security suites. |
 | **Phase 2 Claims & NLP** | `PLANNED` | Whisper ASR transcription, Surya OCR, claim extraction pipelines. |
 | **Phase 3 Source Retrieval** | `PLANNED` | SearXNG / Google Search providers, dense vector retrieval (BM25 + Chroma/Qdrant). |
 | **Phase 4 Claim Verification** | `PLANNED` | NLI cross-encoder fact checking, verdict synthesis, citation generation. |

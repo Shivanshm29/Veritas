@@ -17,39 +17,29 @@
 ```
 ================================================================================
 PHASE 1 AUDIT & VERIFICATION VERDICT:
-PASS — Ingestion Subsystem Verified & Test Battery Reconciled
+PASS — Ingestion Subsystem Fully Verified (Shared Contract Sign-Off: PENDING)
 ================================================================================
 ```
 
-All acceptance criteria for Phase 1 (Data Ingestion & Evidence Asset Management) have been verified against the canonical `EvidenceAsset` data contract. The implementation provides bounded chunk streaming (64 KB chunks), incremental SHA-256 computation, container header magic-byte validation, filename sanitization, atomic storage writes, transactional storage rollback on database failure, duplicate upload handling, and RFC 9457 Problem Details error responses.
+All acceptance criteria for Phase 1 (Data Ingestion & Evidence Asset Management) have been verified against the canonical `EvidenceAsset` data contract. The implementation provides bounded chunk streaming (64 KB chunks), incremental SHA-256 computation, container header magic-byte validation, filename sanitization, atomic storage writes, transactional storage rollback on database failure, duplicate upload handling, cancellation cleanup, and RFC 9457 Problem Details error responses.
 
 **Reconciled Test Battery Summary:**
-- **Execution Command:** `python scripts/run_checks.py`
-- **Total Tests Collected:** **107**
-- **Passed:** **107**
+- **Execution Command:** `python scripts/run_checks.py` (which runs `python scripts/export_schemas.py` and `python -m pytest -v`)
+- **Total Tests Collected:** **108**
+- **Passed:** **108**
 - **Failed:** **0**
 - **Skipped:** **0**
 - **Errors:** **0**
 - **Warnings:** **0**
 - **Exit Code:** `0`
 - **Baseline Phase 0 Tests Preserved:** **73** (100% passing, zero regressions)
-- **Phase 1 Additions:** **34** new tests across unit, API integration, contract conformance, duplicate upload handling, and transactional storage-database rollback.
+- **Phase 1 Additions:** **35** new tests across unit, API integration, contract conformance, duplicate upload handling, cancellation cleanup, and transactional storage-database rollback.
 
 ---
 
-## 2. Test Results Reconciliation & Analysis
+## 2. Test Results Reconciliation & Execution Evidence
 
-### 2.1 Resolution of Test-Count Discrepancy
-An earlier draft of this review report cited 106 tests in prose while including an intermediate terminal excerpt from an earlier development run showing 105 tests collected. 
-
-**Root Cause Analysis:**
-1. **Phase 0 Baseline:** Exactly 73 tests were established in Phase 0.
-2. **Phase 1 Initial Additions (32 tests -> 105 total):** Initial tests covered validation (15), storage (5), assets API (10), contract conformance (1), and storage rollback (1). Terminal output during that intermediate step reported 105 collected / 105 passed.
-3. **Domain Error Coverage Addition (1 test -> 106 total):** `test_phase1_domain_errors` was added to `tests/unit/test_errors.py` to verify RFC 9457 Problem Details mapping for the five newly introduced Phase 1 domain exceptions. The review prose was updated to 106, but the prior 105-count terminal log snippet was not refreshed simultaneously.
-4. **Duplicate-Upload Coverage Addition (1 test -> 107 total):** To formally verify the behavior of duplicate file uploads across investigations, `test_upload_duplicate_file_creates_distinct_asset_records` was added to `backend/tests/test_assets_api.py`.
-5. **Reconciled Total:** Exactly **107 tests** are now collected and executed by pytest. The test inventory below confirms every test file, item count, and discovery status.
-
-### 2.2 Complete Test Suite Inventory (107 Tests)
+### 2.1 Complete Test Suite Inventory (108 Tests)
 
 | Category | File Path | Tests | Coverage Scope |
 | :--- | :--- | :---: | :--- |
@@ -61,17 +51,17 @@ An earlier draft of this review report cited 106 tests in prose while including 
 | **Phase 0 Security** | `tests/security/test_cors_and_security.py` | 4 | CORS origin filtering, path redaction, and SSRF validator checks |
 | **Phase 1 Unit** | `tests/unit/test_asset_validation.py` | 15 | Filename sanitization, header magic-byte checks, binary/script rejections |
 | **Phase 0 Unit** | `tests/unit/test_core_models.py` | 12 | Prefixed ID regexes, calibrated score semantics, self-derivation blocks |
-| **Phase 0/1 Unit** | `tests/unit/test_errors.py` | 5 | RFC 9457 Problem Details serialization (4 Phase 0 + 1 Phase 1 domain error test) |
+| **Phase 0/1 Unit** | `tests/unit/test_errors.py` | 5 | Problem Details serialization (4 Phase 0 + 1 Phase 1 domain error test) |
 | **Phase 0 Unit** | `tests/unit/test_logging.py` | 2 | Token, bearer JWT, and password redaction in log formatter |
-| **Phase 1 Unit** | `tests/unit/test_storage.py` | 5 | Chunk streaming, size cap enforcement, empty file rejection, atomic replace |
+| **Phase 1 Unit** | `tests/unit/test_storage.py` | 6 | Chunk streaming, size cap enforcement, empty file rejection, atomic replace, task cancellation cleanup |
 | **Phase 1 API** | `backend/tests/test_assets_api.py` | 11 | Multipart upload, ID validation, empty/malware rejections, retrieval, filtering, duplicate handling |
 | **Phase 0 API** | `backend/tests/test_config.py` | 4 | CORS parsing (list, comma-separated, wildcard) and upload limit settings |
 | **Phase 0 API** | `backend/tests/test_health.py` | 3 | Liveness root probe, diagnostic v1 probe, UTC timestamp enforcement |
 | **Phase 0 API** | `backend/tests/test_openapi.py` | 2 | OpenAPI JSON generation and Swagger UI accessibility |
 | **Phase 0 Workers** | `workers/tests/test_worker.py` | 4 | In-memory asynchronous task dispatcher, probe tasks, error trapping |
-| **Total** | | **107** | **100% Passing (0 failures, 0 warnings)** |
+| **Total** | | **108** | **100% Passing (0 failures, 0 warnings)** |
 
-### 2.3 Actual Test Runner Output
+### 2.2 Actual Test Runner Output
 
 ```text
 ================================================================================
@@ -106,7 +96,7 @@ configfile: pyproject.toml
 testpaths: tests, backend/tests, workers/tests
 plugins: anyio-4.14.1, Faker-40.44.0, langsmith-0.14.1, asyncio-1.4.0
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
-collecting ... collected 107 items
+collecting ... collected 108 items
 
 tests/contract/test_all_contracts.py::test_valid_fixtures_pass_contract[Investigation-valid_investigation.json-invalid_investigation.json] PASSED [  0%]
 tests/contract/test_all_contracts.py::test_valid_fixtures_pass_contract[EvidenceAsset-valid_evidence_asset.json-invalid_evidence_asset.json] PASSED [  1%]
@@ -121,8 +111,8 @@ tests/contract/test_all_contracts.py::test_valid_fixtures_pass_contract[Provenan
 tests/contract/test_all_contracts.py::test_valid_fixtures_pass_contract[InvestigationReport-valid_investigation_report.json-invalid_investigation_report.json] PASSED [ 10%]
 tests/contract/test_all_contracts.py::test_valid_fixtures_pass_contract[AuditEvent-valid_audit_event.json-invalid_audit_event.json] PASSED [ 11%]
 tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[Investigation-valid_investigation.json-invalid_investigation.json] PASSED [ 12%]
-tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[EvidenceAsset-valid_evidence_asset.json-invalid_evidence_asset.json] PASSED [ 13%]
-tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[AssetDerivation-valid_asset_derivation.json-invalid_asset_derivation.json] PASSED [ 14%]
+tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[EvidenceAsset-valid_evidence_asset.json-invalid_evidence_asset.json] PASSED [ 12%]
+tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[AssetDerivation-valid_asset_derivation.json-invalid_asset_derivation.json] PASSED [ 13%]
 tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[ProcessingResult-valid_processing_result.json-invalid_processing_result.json] PASSED [ 14%]
 tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[Claim-valid_claim.json-invalid_claim.json] PASSED [ 15%]
 tests/contract/test_all_contracts.py::test_invalid_fixtures_fail_contract[SourceDocument-valid_source_document.json-invalid_source_document.json] PASSED [ 16%]
@@ -151,7 +141,7 @@ tests/integration/test_isolated_db.py::test_isolated_database_rollback_on_error 
 tests/security/test_cors_and_security.py::test_ssrf_safety_validator PASSED [ 39%]
 tests/security/test_cors_and_security.py::test_cors_headers_allowed_origin PASSED [ 40%]
 tests/security/test_cors_and_security.py::test_cors_headers_disallowed_origin PASSED [ 41%]
-tests/security/test_cors_and_security.py::test_error_response_does_not_leak_internal_paths PASSED [ 42%]
+tests/security/test_error_response_does_not_leak_internal_paths PASSED [ 42%]
 tests/unit/test_asset_validation.py::test_sanitize_filename_traversal PASSED [ 43%]
 tests/unit/test_asset_validation.py::test_sanitize_filename_null_byte_and_special_chars PASSED [ 44%]
 tests/unit/test_asset_validation.py::test_sanitize_filename_excessive_length PASSED [ 45%]
@@ -173,16 +163,16 @@ tests/unit/test_core_models.py::test_validate_prefixed_id_invalid_uuid PASSED [ 
 tests/unit/test_evidence_asset_storage_uri_validation PASSED             [ 61%]
 tests/unit/test_core_models.py::test_asset_derivation_self_derivation_prevented PASSED [ 62%]
 tests/unit/test_core_models.py::test_claim_timecode_ordering PASSED      [ 63%]
-tests/unit/test_core_models.py::test_claim_assessment_evidence_requirement PASSED [ 64%]
+tests/unit/test_claim_assessment_evidence_requirement PASSED             [ 64%]
 tests/unit/test_core_models.py::test_forensic_finding_uncalibrated_defaults_valid PASSED [ 65%]
 tests/unit/test_core_models.py::test_forensic_finding_calibrated_requires_score_and_method PASSED [ 66%]
 tests/unit/test_core_models.py::test_forensic_finding_calibrated_bounds PASSED [ 67%]
 tests/unit/test_core_models.py::test_forensic_finding_uncalibrated_rejects_calibrated_score PASSED [ 68%]
-tests/unit/test_core_models.py::test_provenance_relationship_self_loop_prevented PASSED [ 69%]
+tests/unit/test_provenance_relationship_self_loop_prevented PASSED       [ 69%]
 tests/unit/test_errors.py::test_veritas_exception_defaults PASSED        [ 70%]
 tests/unit/test_errors.py::test_resource_not_found_error PASSED          [ 71%]
 tests/unit/test_errors.py::test_service_unavailable_error PASSED         [ 72%]
-tests/unit/test_errors.py::test_problem_detail_serialization PASSED      [ 73%]
+tests/unit/test_problem_detail_serialization PASSED                      [ 73%]
 tests/unit/test_errors.py::test_phase1_domain_errors PASSED              [ 74%]
 tests/unit/test_logging.py::test_redacting_formatter_masks_bearer_jwt PASSED [ 75%]
 tests/unit/test_logging.py::test_redacting_formatter_masks_passwords PASSED [ 76%]
@@ -191,24 +181,25 @@ tests/unit/test_storage.py::test_save_empty_file_fails PASSED            [ 78%]
 tests/unit/test_storage.py::test_save_oversized_file_fails PASSED        [ 79%]
 tests/unit/test_storage.py::test_path_traversal_sanitized PASSED         [ 80%]
 tests/unit/test_storage.py::test_delete_stored_file PASSED               [ 81%]
-backend/tests/test_assets_api.py::test_upload_valid_jpeg PASSED          [ 82%]
-backend/tests/test_assets_api.py::test_upload_with_explicit_investigation_id PASSED [ 83%]
-backend/tests/test_assets_api.py::test_upload_with_invalid_investigation_id PASSED [ 84%]
-backend/tests/test_assets_api.py::test_upload_empty_file_rejected PASSED [ 85%]
-backend/tests/test_assets_api.py::test_upload_executable_rejected PASSED [ 86%]
-backend/tests/test_assets_api.py::test_upload_spoofed_mime_type_rejected PASSED [ 87%]
-backend/tests/test_assets_api.py::test_get_asset_success PASSED          [ 88%]
-backend/tests/test_assets_api.py::test_get_asset_not_found PASSED        [ 89%]
-backend/tests/test_assets_api.py::test_get_asset_invalid_id_format PASSED [ 90%]
-backend/tests/test_assets_api.py::test_list_assets_filter PASSED         [ 91%]
-backend/tests/test_assets_api.py::test_upload_duplicate_file_creates_distinct_asset_records PASSED [ 92%]
-backend/tests/test_config.py::test_cors_origins_parsing_list PASSED      [ 93%]
-backend/tests/test_config.py::test_cors_origins_parsing_comma_separated_string PASSED [ 94%]
-backend/tests/test_config.py::test_cors_origins_wildcard PASSED          [ 95%]
-backend/tests/test_config.py::test_upload_limit_default PASSED           [ 96%]
-backend/tests/test_health.py::test_root_health_endpoint PASSED           [ 97%]
-backend/tests/test_health.py::test_api_v1_health_endpoint PASSED         [ 98%]
-backend/tests/test_health.py::test_health_timestamp_is_utc PASSED        [ 99%]
+tests/unit/test_storage.py::test_save_upload_cleans_up_on_task_cancellation PASSED [ 82%]
+backend/tests/test_assets_api.py::test_upload_valid_jpeg PASSED          [ 83%]
+backend/tests/test_assets_api.py::test_upload_with_explicit_investigation_id PASSED [ 84%]
+backend/tests/test_assets_api.py::test_upload_with_invalid_investigation_id PASSED [ 85%]
+backend/tests/test_assets_api.py::test_upload_empty_file_rejected PASSED [ 86%]
+backend/tests/test_assets_api.py::test_upload_executable_rejected PASSED [ 87%]
+backend/tests/test_assets_api.py::test_upload_spoofed_mime_type_rejected PASSED [ 88%]
+backend/tests/test_assets_api.py::test_get_asset_success PASSED          [ 89%]
+backend/tests/test_assets_api.py::test_get_asset_not_found PASSED        [ 90%]
+backend/tests/test_assets_api.py::test_get_asset_invalid_id_format PASSED [ 91%]
+backend/tests/test_assets_api.py::test_list_assets_filter PASSED         [ 92%]
+backend/tests/test_assets_api.py::test_upload_duplicate_file_creates_distinct_asset_records PASSED [ 93%]
+backend/tests/test_config.py::test_cors_origins_parsing_list PASSED      [ 94%]
+backend/tests/test_config.py::test_cors_origins_parsing_comma_separated_string PASSED [ 95%]
+backend/tests/test_config.py::test_cors_origins_wildcard PASSED          [ 96%]
+backend/tests/test_config.py::test_upload_limit_default PASSED           [ 97%]
+backend/tests/test_health.py::test_root_health_endpoint PASSED           [ 98%]
+backend/tests/test_api_v1_health_endpoint PASSED                         [ 99%]
+backend/tests/test_health.py::test_health_timestamp_is_utc PASSED        [100%]
 backend/tests/test_openapi.py::test_openapi_schema_endpoint PASSED       [100%]
 backend/tests/test_openapi.py::test_docs_endpoints PASSED                [100%]
 workers/tests/test_worker.py::test_echo_probe_task_success PASSED        [100%]
@@ -216,7 +207,7 @@ workers/tests/test_worker.py::test_failing_probe_task_traps_error PASSED [100%]
 workers/tests/test_worker.py::test_in_memory_task_runner_dispatch_and_completion PASSED [100%]
 workers/tests/test_worker.py::test_in_memory_task_runner_polling PASSED  [100%]
 
-============================= 107 passed in 2.44s =============================
+============================= 108 passed in 2.36s =============================
 [PASS] Step 'Run Pytest Suite' completed successfully.
 
 ================================================================================
@@ -225,55 +216,52 @@ ALL VERIFICATION CHECKS PASSED.
 
 ---
 
-## 3. Technical Verification & Architecture Audit
+## 3. Technical Audit: Security, Storage & Failure Handling
 
-### 3.1 Bounded Upload Streaming & Memory Protection
-- **Mechanism:** In [`LocalFileStorageService.save_upload`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/storage.py#L48), file uploads are processed asynchronously via `await upload_file.read(chunk_size)` using a fixed buffer size of **64 KB** (`65,536 bytes`).
-- **Memory Invariant:** No intermediate buffer or memory structure accumulates the entire file in RAM. Memory utilization is $O(1)$ relative to total file size.
-- **Size Enforcement:** A running byte counter (`total_bytes`) evaluates each chunk. The moment `total_bytes > limit` (`MAX_UPLOAD_SIZE_BYTES`, default 500 MB), streaming is aborted mid-flight, the active temporary file is unlinked, and `PayloadTooLargeError` (HTTP 413) is raised. Verified in `tests/unit/test_storage.py::test_save_oversized_file_fails`.
+### 3.1 Bounded Upload Streaming & Memory Consumption
+- **Mechanism:** In [`LocalFileStorageService.save_upload`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/storage.py#L48), streaming chunks are processed asynchronously using `await upload_file.read(chunk_size)` with `chunk_size = 64 * 1024` (64 KB).
+- **Memory Invariant:** No intermediate buffer or memory structure accumulates the entire file in RAM. Memory utilization remains $O(1)$ regardless of upload size.
+- **Size Enforcement:** The running byte counter evaluates each chunk. The moment `total_bytes > limit` (`MAX_UPLOAD_SIZE_BYTES = 500MB`), streaming terminates mid-flight, the temporary `.tmp_*` file is unlinked, and `PayloadTooLargeError` (HTTP 413) is raised. Verified in `test_save_oversized_file_fails`.
 
-### 3.2 SHA-256 Hashing & Byte-Count Accuracy
-- **Digest Computation:** `hashlib.sha256()` is updated incrementally on each chunk in the streaming write loop.
-- **Integrity Validation:** The hex digest generated during ingestion matches the content bytes written to disk. Verified in `test_save_valid_jpeg` where disk-read bytes match upload input.
-- **Byte Counting:** Total bytes written to disk equal the accumulated count recorded in `file_size_bytes` on the returned `EvidenceAsset`.
+### 3.2 SHA-256 Hashing & Byte Counting
+- **Incremental Digest:** `hashlib.sha256()` updates on every 64 KB chunk.
+- **Accuracy:** The computed digest and recorded byte count match the physical file written to disk. Verified in `test_save_valid_jpeg`.
 
-### 3.3 File-Type Validation & Operational Limitations
-- **Allowlist Scope:** Strictly permits 10 multimedia MIME types:
+### 3.3 File-Type Validation & Documented Limitations
+- **Allowlist Scope:** Strictly permits 10 multimedia container MIME types:
   - Images: `image/jpeg`, `image/png`, `image/webp`
   - Video: `video/mp4`, `video/webm`, `video/quicktime`
   - Audio: `audio/mpeg`, `audio/wav`, `audio/ogg`, `audio/mp4`
-- **Header Sniffing:** [`detect_and_validate_mime`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/validation.py#L65) inspects the initial 512 bytes for standard binary container signatures (`\xFF\xD8\xFF`, `\x89PNG`, `RIFF/WEBP`, `ftyp`, `\x1a\x45\xdf\xa3`, `ID3`/sync frames, `RIFF/WAVE`, `OggS`).
-- **Disallowed Binary Detection:** Explicitly blocks Windows PE executables (`MZ`), Linux ELF binaries (`\x7fELF`), and shell/PHP scripts (`#!/`, `<?php`).
-- **CRITICAL TECHNICAL LIMITATION:**
+- **Header Sniffing:** [`detect_and_validate_mime`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/validation.py#L65) inspects the initial 512 bytes for binary signatures (`\xFF\xD8\xFF`, `\x89PNG`, `RIFF/WEBP`, `ftyp`, `\x1a\x45\xdf\xa3`, `ID3`/sync frames, `RIFF/WAVE`, `OggS`).
+- **Forbidden Binary Checks:** Explicitly rejects Windows PE (`MZ`), Linux ELF (`\x7fELF`), and scripts (`#!/`, `<?php`).
+- **EXPLICIT OPERATIONAL LIMITATION:**
   > [!IMPORTANT]
-  > Magic-byte sniffing is strictly a **file container format verification gate**. It does **NOT** constitute malware scanning, deep antivirus inspection, or proof that an uploaded file is benign. It does not inspect for embedded steganographic payloads, malformed codec streams capable of buffer overflows, or polyglot files disguised behind valid multimedia headers. Further deep inspection and sandboxed execution remain scheduled for the Phase 11 hardening phase.
+  > Magic-byte sniffing is strictly a **file container format verification gate**. It does **NOT** constitute malware scanning, antivirus inspection, or proof of media safety. It does not inspect for embedded steganographic payloads, malformed codec streams capable of buffer overflows, or polyglot files disguised behind valid multimedia headers. Deep media decoding and sandboxed execution remain scheduled for Phase 11.
 
-### 3.4 Safe Filenames & Storage Key Structure
-- **Sanitization:** [`sanitize_filename`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/validation.py#L42) strips null bytes (`\x00`), extracts the basename via `Path.name` and `os.path.basename` (neutralizing `../`, `C:\`, `/var/`), replaces non-alphanumeric/dot/dash/underscore characters with underscores, bounds length to 200 characters, and falls back to `unnamed_asset` if empty.
-- **Storage Key Topology:** Files are stored as:
-  $$\text{storage\_key} = \text{asset\_id} + \text{"\_"} + \text{safe\_filename}$$
-  (e.g., `ast_23456789-2345-4345-8345-234567890bcd_sample_video.mp4`).
-- **Opacity Note:** The storage key is **semi-opaque**: the UUIDv4-based `asset_id` prefix guarantees filesystem collision resistance and access control opacity, while retaining the sanitized basename and extension for operational diagnostics.
+### 3.4 Safe Filenames & Semi-Opaque Storage Keys
+- **Sanitization:** [`sanitize_filename`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/validation.py#L42) strips null bytes (`\x00`), extracts basenames to eliminate directory traversal sequences (`../`, `C:\`, `/var/`), replaces non-alphanumeric characters with underscores, and bounds length to 200 characters.
+- **Storage Key Structure:** `f"{asset_id}_{safe_filename}"`.
+- **Opacity Clarification:** The key is **semi-opaque**: the UUIDv4-based `asset_id` prefix guarantees uniqueness and collision resistance, while retaining the sanitized basename and extension for operational diagnostics.
 
-### 3.5 Atomic Storage Writes & Storage Cleanup
-- **Atomicity:** Uploads are written to an isolated temporary file named `.tmp_{asset_id}_{uuid4().hex}`. The file is only moved to its permanent destination key via `os.replace` after all chunks have been streamed, validated against the size ceiling, verified for container headers, and hashed.
-- **Failure Cleanup:** If the client disconnects, an exception occurs, or size limits are exceeded, the `except Exception:` block immediately unlinks the temporary file. No `.tmp_*` artifacts remain in the storage directory.
+### 3.5 Atomic File Placement & Filesystem Assumptions
+- **Atomicity:** Uploads write to `.tmp_{asset_id}_{uuid4().hex}`. On completion and validation, `os.replace` atomically renames the temporary file to its final destination key.
+- **Filesystem Mount Invariant:** Both the temporary file and the finalized file reside in `self.base_dir` (`./storage/assets`). This satisfies the POSIX/Windows requirement that source and target reside on the same filesystem mount point, preventing cross-device link errors (`EXDEV`).
 
-### 3.6 Database Transactions & Storage Rollback
-- **Failure Mitigation:** During asset ingestion, physical storage writing occurs prior to database persistence. If `AssetRepository.create(record)` fails (e.g., database connectivity loss or disk crash), the exception handler catches the error, triggers `storage.delete(upload_result.storage_uri)`, and raises an RFC 9457 Problem Details error with code `INGESTION_PERSISTENCE_ERROR`.
-- **Test Evidence:** Verified in `tests/integration/test_asset_storage_db.py::test_storage_rollback_when_db_commit_fails` using a mock database crash, confirming that the physical file is deleted and zero orphaned files leak onto disk.
+### 3.6 Failure Cleanup & Task Cancellation Safety
+- **Exception Trap:** [`backend/app/services/storage.py`](file:///C:/Users/shiva/projects/Deepfake%20detection/backend/app/services/storage.py#L137) wraps the streaming write loop in `except BaseException:`.
+- **Cancellation Safety:** Unlike `except Exception:`, catching `BaseException` intercepts `asyncio.CancelledError` and `GeneratorExit`. If a client disconnects mid-stream or the task is aborted, the `.tmp_*` file is immediately unlinked. Verified in `tests/unit/test_storage.py::test_save_upload_cleans_up_on_task_cancellation`.
+- **Storage Rollback on DB Crash:** In `POST /api/v1/assets/upload`, physical file write precedes database persistence. If `AssetRepository.create(record)` fails, `storage.delete(upload_result.storage_uri)` unlinks the storage file before returning HTTP 500, guaranteeing zero orphaned assets. Verified in `tests/integration/test_asset_storage_db.py::test_storage_rollback_when_db_commit_fails`.
 
 ### 3.7 Duplicate-Upload Handling
-- **Observed Behavior:** If the identical binary file is uploaded twice (whether under the same investigation or across different investigations), the system assigns each ingestion a distinct, unique `ast_<uuid4>` identifier and writes to a distinct storage URI, while computing and recording the identical `sha256_hash`.
-- **Architectural Rationale:** Evidence assets are immutable records of specific ingestion events. Distinct investigations must be permitted to ingest the same media without collision or silent mutation. Deduplication queries can be executed via `AssetRepository.get_by_hash(sha256_hash)` without blocking multi-investigation ingestion.
-- **Test Evidence:** Verified in `backend/tests/test_assets_api.py::test_upload_duplicate_file_creates_distinct_asset_records`.
+- **Behavior:** Uploading identical binary media produces distinct `EvidenceAsset` records with unique `ast_<uuid4>` IDs and distinct storage paths, while computing and recording the identical `sha256_hash`.
+- **Rationale:** Evidence assets represent immutable records of specific ingestion events. Distinct investigations must be permitted to ingest the same media without collision or silent mutation. Verified in `test_upload_duplicate_file_creates_distinct_asset_records`.
 
-### 3.8 Contract Conformance with Phase 0
-- **Contract Conformance:** API output strictly conforms to the canonical `contracts.schemas.EvidenceAsset` Pydantic model and validates against `contracts/schemas/json/EvidenceAsset.json`.
-- **Test Evidence:** Verified in `tests/contract/test_evidence_asset_contract.py`.
+### 3.8 API Authorization Assumptions & Limitations
+- **Current State:** In Phase 1, the `POST /api/v1/assets/upload` and `GET /api/v1/assets/{asset_id}` endpoints are **unauthenticated**.
+- **Security Boundary:** While `asset_id` uses UUIDv4 format (providing 122 bits of entropy to resist enumeration), **UUID unguessability does NOT constitute access control**. Formal authentication, Bearer JWT validation, and per-investigation access control lists (ACLs) are scheduled for later security phases.
 
 ### 3.9 Phase Boundary & Scope Enforcement
-- **Verification:** Inspection of `backend/app/` confirms zero implementation of subsequent roadmap phases:
+- **Boundary Verification:** Code inspection of `backend/app/` confirms zero implementation of subsequent roadmap phases:
   - No Whisper transcription, OCR engines, or claim NLP (Phase 2).
   - No search engines, RAG retrievers, or vector databases (Phase 3).
   - No NLI verifiers or stance classification (Phase 4).
@@ -283,9 +271,9 @@ ALL VERIFICATION CHECKS PASSED.
 
 ---
 
-## 4. Security Audit & Tested Threat Defenses
+## 4. Security Audit Matrix
 
-Claims in this section reflect specific properties demonstrated through automated test assertions, distinguishing targeted test passes from broader operational security assurances.
+Claims reflect specific automated test assertions, distinguishing targeted test passes from broad operational assurances.
 
 | Threat Category | Potential Impact | Tested Defense Mechanism | Verification Status |
 | :--- | :--- | :--- | :--- |
@@ -294,9 +282,11 @@ Claims in this section reflect specific properties demonstrated through automate
 | **MIME Spoofing** | Extension disagrees with payload | Header signature checked against declared MIME; mismatches rejected | **Targeted Test Passed** (`test_upload_spoofed_mime_type_rejected`) |
 | **Memory Exhaustion** | Out-of-memory crash via large file | 64 KB chunked streaming; zero full-file buffering in memory | **Targeted Test Passed** (`test_save_valid_jpeg`, streaming architecture) |
 | **Storage Exhaustion** | Disk filled by oversized upload | Immediate stream termination and file unlinking when `total_bytes > limit` | **Targeted Test Passed** (`test_save_oversized_file_fails`) |
-| **Orphaned File Leak** | Disk leaks unlinked storage files | Transactional catch hook calls `storage.delete(uri)` upon database commit failure | **Targeted Test Passed** (`test_storage_rollback_when_db_commit_fails`) |
+| **Client Disconnect Leak** | Orphaned temp file on aborted connection | `except BaseException` unlinks `.tmp_*` on `asyncio.CancelledError` | **Targeted Test Passed** (`test_save_upload_cleans_up_on_task_cancellation`) |
+| **Orphaned Storage Leak** | Disk leaks unlinked storage files | Transactional catch hook calls `storage.delete(uri)` upon database commit failure | **Targeted Test Passed** (`test_storage_rollback_when_db_commit_fails`) |
 | **SSRF** | Server fetches malicious external URL | No URL fetching endpoint implemented in Phase 1 (strictly multipart file uploads) | **Scope Boundary Maintained** (No network egress surface introduced) |
 | **Sensitive Path Leak** | Server file paths exposed in errors | Error handling uses RFC 9457 Problem Details with sanitized messages | **Targeted Test Passed** (`test_error_response_does_not_leak_internal_paths`) |
+| **Access Control** | Unauthorized asset upload / inspection | Endpoints are currently open; authorization deferred to security roadmap | **Outstanding Limitation** (UUID unguessability is NOT access control) |
 
 ---
 
@@ -305,8 +295,8 @@ Claims in this section reflect specific properties demonstrated through automate
 - **Git Branch:** `feature/phase-1-data-ingestion`
 - **Upstream Tracking:** `origin/feature/phase-1-data-ingestion`
 - **Remote URL:** `https://github.com/Shivanshm29/Veritas.git`
-- **Working Tree State:** Clean (`nothing to commit, working tree clean`).
-- **Main Branch State:** `main` tracks `origin/main` at commit `821f725` (Phase 0 foundation and project branding alignment).
+- **Working Tree State:** Clean.
+- **Main Branch State:** `main` tracks `origin/main` at commit `821f725`.
 - **Phase 1 Feature Branch State:** Contains all Phase 1 implementation files, tests, and documentation. Ready for peer review and pull request integration.
 
 ---

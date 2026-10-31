@@ -134,8 +134,8 @@ class LocalFileStorageService(StorageService):
                 file_path=final_path,
             )
 
-        except Exception:
-            # Ensure temporary file is destroyed on error or abort
+        except BaseException:
+            # Ensure temporary file is destroyed on error, abort, or task cancellation
             if temp_path.exists():
                 try:
                     temp_path.unlink()

@@ -48,7 +48,7 @@ docker compose -f infra/docker-compose.yml down -v
 ## 3. Decoupled / No-Docker Fallback
 
 If Docker Desktop is offline or unavailable on a developer workstation:
-- **Database:** SQLAlchemy falls back automatically to SQLite (`sqlite:///:memory:` or local `pramaan_dev.db`).
+- **Database:** SQLAlchemy falls back automatically to SQLite (`sqlite:///:memory:` or local `veritas_dev.db`).
 - **Cache / Queue:** Worker tests execute via the in-process `InMemoryTaskRunner`.
 - **Object Storage:** File storage uses standard local filesystem paths (`./storage`).
 
