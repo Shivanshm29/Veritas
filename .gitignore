@@ -85,3 +85,7 @@ yarn-error.log*
 
 # Legacy forge folder
 /image_forensics/
+
+sample_video.mp4
+
+test_run_video.py
