@@ -1,5 +1,5 @@
 """
-Pytest configuration and fixtures for PRAMAAN Backend Tests.
+Pytest configuration and fixtures for Veritas Backend Tests.
 """
 
 import os

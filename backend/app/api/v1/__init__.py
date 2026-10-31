@@ -1,5 +1,5 @@
 """
-API v1 Router aggregation for PRAMAAN.
+API v1 Router aggregation for Veritas.
 """
 
 from fastapi import APIRouter

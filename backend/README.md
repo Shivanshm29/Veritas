@@ -1,6 +1,6 @@
-# PRAMAAN — Core Backend Subsystem
+# Veritas — Core Backend Subsystem
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Directory:** `backend/`  
 **Purpose:** FastAPI REST Services for Person 1 Pipeline Endpoints  
 
@@ -27,7 +27,7 @@ uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
   ```json
   {
     "status": "healthy",
-    "service": "PRAMAAN Core Backend",
+    "service": "Veritas Core Backend",
     "version": "0.1.0",
     "environment": "development",
     "timestamp": "2026-10-31T11:46:05.000000Z"

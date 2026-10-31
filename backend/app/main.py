@@ -1,5 +1,5 @@
 """
-PRAMAAN Backend Application Entry Point.
+Veritas Backend Application Entry Point.
 
 FastAPI application factory, CORS configuration, exception handlers, and routing.
 """
@@ -14,8 +14,10 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from backend.app.api.router import api_router
 from backend.app.core.config import settings
 from backend.app.core.errors import (
+    VeritasException,
     PramaanException,
     http_exception_handler,
+    veritas_exception_handler,
     pramaan_exception_handler,
     validation_exception_handler,
 )
@@ -40,7 +42,7 @@ def create_app() -> FastAPI:
         title=settings.PROJECT_NAME,
         version=settings.VERSION,
         description=(
-            "PRAMAAN — Provenance, Reliability & Authenticity Monitoring and Analysis Network.\n\n"
+            "Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network.\n\n"
             "Person 1 Backend: Data Ingestion, Claim Intelligence, and Retrieval Verification."
         ),
         openapi_url=f"{settings.API_V1_PREFIX}/openapi.json",
@@ -64,7 +66,7 @@ def create_app() -> FastAPI:
     )
 
     # Register Exception Handlers (RFC 9457 Problem Details)
-    app.add_exception_handler(PramaanException, pramaan_exception_handler)
+    app.add_exception_handler(VeritasException, veritas_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 

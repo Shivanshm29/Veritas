@@ -1,5 +1,5 @@
 """
-Application configuration for PRAMAAN Backend.
+Application configuration for Veritas Backend.
 
 Loads environment variables via Pydantic Settings.
 """
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # Application Environment
     ENVIRONMENT: str = Field(default="development", description="development, staging, or production")
     DEBUG: bool = Field(default=False)
-    PROJECT_NAME: str = Field(default="PRAMAAN Core Backend")
+    PROJECT_NAME: str = Field(default="Veritas Core Backend")
     VERSION: str = Field(default="0.1.0")
     API_V1_PREFIX: str = Field(default="/api/v1")
     APP_HOST: str = Field(default="0.0.0.0")
@@ -40,9 +40,9 @@ class Settings(BaseSettings):
     # Asynchronous Infrastructure (Optional in Phase 0)
     REDIS_URL: str = Field(default="redis://localhost:6379/0")
     S3_ENDPOINT_URL: str = Field(default="http://localhost:9000")
-    S3_ACCESS_KEY: str = Field(default="pramaan_minio_admin")
-    S3_SECRET_KEY: str = Field(default="pramaan_minio_password")
-    S3_BUCKET_NAME: str = Field(default="pramaan-evidence-assets")
+    S3_ACCESS_KEY: str = Field(default="veritas_minio_admin")
+    S3_SECRET_KEY: str = Field(default="veritas_minio_password")
+    S3_BUCKET_NAME: str = Field(default="veritas-evidence-assets")
     S3_REGION: str = Field(default="us-east-1")
     STORAGE_BASE_DIR: str = Field(default="./storage")
 

@@ -1,5 +1,5 @@
 """
-Task interfaces and demonstration handlers for PRAMAAN worker scaffold.
+Task interfaces and demonstration handlers for Veritas worker scaffold.
 """
 
 import hashlib

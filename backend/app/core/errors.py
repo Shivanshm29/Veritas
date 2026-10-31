@@ -1,5 +1,5 @@
 """
-Error definitions and exception handlers for PRAMAAN.
+Error definitions and exception handlers for Veritas.
 
 Maps application exceptions to RFC 9457 Problem Details responses.
 """
@@ -14,8 +14,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from backend.app.schemas.problem import ProblemDetail, InvalidParam
 
 
-class PramaanException(Exception):
-    """Base application exception for PRAMAAN."""
+class VeritasException(Exception):
+    """Base application exception for Veritas."""
 
     def __init__(
         self,
@@ -23,7 +23,7 @@ class PramaanException(Exception):
         title: str = "Internal Server Error",
         detail: str = "An unexpected error occurred.",
         code: str = "INTERNAL_ERROR",
-        error_type: str = "https://pramaan.org/errors/INTERNAL_ERROR",
+        error_type: str = "https://veritas.org/errors/INTERNAL_ERROR",
     ):
         self.status_code = status_code
         self.title = title
@@ -33,30 +33,34 @@ class PramaanException(Exception):
         super().__init__(detail)
 
 
-class ResourceNotFoundError(PramaanException):
+# Backward-compatibility alias
+PramaanException = VeritasException
+
+
+class ResourceNotFoundError(VeritasException):
     def __init__(self, resource_type: str, resource_id: str):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
             title="Resource Not Found",
             detail=f"{resource_type} with id '{resource_id}' was not found.",
             code="RESOURCE_NOT_FOUND",
-            error_type="https://pramaan.org/errors/RESOURCE_NOT_FOUND",
+            error_type="https://veritas.org/errors/RESOURCE_NOT_FOUND",
         )
 
 
-class ServiceUnavailableError(PramaanException):
+class ServiceUnavailableError(VeritasException):
     def __init__(self, service_name: str, reason: str):
         super().__init__(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             title="Service Unavailable",
             detail=f"Downstream service '{service_name}' is currently unavailable: {reason}",
             code="SERVICE_UNAVAILABLE",
-            error_type="https://pramaan.org/errors/SERVICE_UNAVAILABLE",
+            error_type="https://veritas.org/errors/SERVICE_UNAVAILABLE",
         )
 
 
-async def pramaan_exception_handler(request: Request, exc: PramaanException) -> JSONResponse:
-    """Handles domain-specific PramaanException."""
+async def veritas_exception_handler(request: Request, exc: VeritasException) -> JSONResponse:
+    """Handles domain-specific VeritasException."""
     problem = ProblemDetail(
         type=exc.error_type,
         title=exc.title,
@@ -73,6 +77,10 @@ async def pramaan_exception_handler(request: Request, exc: PramaanException) -> 
     )
 
 
+# Backward-compatibility alias
+pramaan_exception_handler = veritas_exception_handler
+
+
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
     """Handles FastAPI/Pydantic validation errors."""
     invalid_params: List[InvalidParam] = []
@@ -82,7 +90,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         invalid_params.append(InvalidParam(name=loc, reason=msg))
 
     problem = ProblemDetail(
-        type="https://pramaan.org/errors/VALIDATION_ERROR",
+        type="https://veritas.org/errors/VALIDATION_ERROR",
         title="Request Validation Error",
         status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         detail="One or more fields in the request payload failed schema validation.",
@@ -101,7 +109,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Handles standard HTTPExceptions."""
     problem = ProblemDetail(
-        type=f"https://pramaan.org/errors/HTTP_{exc.status_code}",
+        type=f"https://veritas.org/errors/HTTP_{exc.status_code}",
         title=exc.detail if isinstance(exc.detail, str) else "HTTP Error",
         status=exc.status_code,
         detail=str(exc.detail),
@@ -114,4 +122,3 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
         content=problem.model_dump(mode="json"),
         headers={"Content-Type": "application/problem+json"},
     )
-

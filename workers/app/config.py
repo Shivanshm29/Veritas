@@ -1,5 +1,5 @@
 """
-Worker configuration and task execution models for PRAMAAN.
+Worker configuration and task execution models for Veritas.
 """
 
 from datetime import datetime, timezone

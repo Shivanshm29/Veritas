@@ -1,6 +1,6 @@
-# PRAMAAN — Local Development Infrastructure
+# Veritas — Local Development Infrastructure
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Directory:** `infra/`  
 **Purpose:** Multi-Container Infrastructure for Local Development & Integration Testing  
 

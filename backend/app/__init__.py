@@ -1,2 +1,2 @@
-"""PRAMAAN Backend Application Package."""
+"""Veritas Backend Application Package."""
 

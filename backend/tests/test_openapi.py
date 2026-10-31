@@ -11,7 +11,7 @@ def test_openapi_schema_endpoint(client):
     assert response.status_code == status.HTTP_200_OK
     schema = response.json()
     assert schema["openapi"].startswith("3.")
-    assert schema["info"]["title"] == "PRAMAAN Core Backend"
+    assert schema["info"]["title"] == "Veritas Core Backend"
     assert "paths" in schema
     assert "/health" in schema["paths"]
     assert "/api/v1/health" in schema["paths"]

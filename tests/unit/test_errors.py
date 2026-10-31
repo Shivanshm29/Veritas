@@ -3,6 +3,7 @@ Unit tests for domain exceptions and RFC 9457 Problem Details schemas.
 """
 
 from backend.app.core.errors import (
+    VeritasException,
     PramaanException,
     ResourceNotFoundError,
     ServiceUnavailableError,
@@ -10,12 +11,16 @@ from backend.app.core.errors import (
 from backend.app.schemas.problem import ProblemDetail
 
 
-def test_pramaan_exception_defaults():
-    """Verifies default exception attributes."""
-    exc = PramaanException()
+def test_veritas_exception_defaults():
+    """Verifies default exception attributes for VeritasException and backward alias."""
+    exc = VeritasException()
     assert exc.status_code == 500
     assert exc.code == "INTERNAL_ERROR"
     assert exc.title == "Internal Server Error"
+    
+    # Backward alias
+    alias_exc = PramaanException()
+    assert isinstance(alias_exc, VeritasException)
 
 
 def test_resource_not_found_error():

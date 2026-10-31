@@ -1,6 +1,6 @@
-# PRAMAAN — Asynchronous Worker Subsystem
+# Veritas — Asynchronous Worker Subsystem
 
-**Project:** PRAMAAN (Provenance, Reliability & Authenticity Monitoring and Analysis Network)  
+**Project:** Veritas — Provenance, Reliability & Authenticity Monitoring and Analysis Network  
 **Directory:** `workers/`  
 **Purpose:** Asynchronous Background Processing Scaffold for Person 1 Pipeline Operations  
 

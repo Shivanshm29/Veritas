@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PRAMAAN Automated Pre-Flight Check & Verification Runner.
+Veritas Automated Pre-Flight Check & Verification Runner.
 
 Executes:
 1. Exporting and validating JSON Schemas

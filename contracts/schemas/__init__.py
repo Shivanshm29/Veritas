@@ -36,6 +36,8 @@ from .models import (
     AuditEventType,
     ActorRole,
     # Core Models
+    VeritasBaseModel,
+    PramaanBaseModel,
     Investigation,
     EvidenceAsset,
     AssetDerivation,
@@ -77,6 +79,8 @@ __all__ = [
     "OverallClaimValidity",
     "AuditEventType",
     "ActorRole",
+    "VeritasBaseModel",
+    "PramaanBaseModel",
     "Investigation",
     "EvidenceAsset",
     "AssetDerivation",

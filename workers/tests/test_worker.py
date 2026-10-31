@@ -10,7 +10,7 @@ from workers.app.runner import InMemoryTaskRunner
 
 def test_echo_probe_task_success():
     """Verifies that demonstration probe task executes successfully and computes hash."""
-    payload = {"message": "PRAMAAN worker probe", "sample_id": 42}
+    payload = {"message": "Veritas worker probe", "sample_id": 42}
     result = echo_probe_task("tsk_001", payload)
     
     assert result.task_id == "tsk_001"

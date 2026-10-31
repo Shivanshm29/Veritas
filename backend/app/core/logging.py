@@ -1,5 +1,5 @@
 """
-Structured logging module for PRAMAAN.
+Structured logging module for Veritas.
 
 Provides JSON-like formatted logging with automated redaction of sensitive credentials and tokens.
 """
@@ -31,7 +31,7 @@ class RedactingFormatter(logging.Formatter):
 
 def setup_logging(log_level: str = "INFO") -> logging.Logger:
     """Configures root logger with redaction formatter."""
-    logger = logging.getLogger("pramaan")
+    logger = logging.getLogger("veritas")
     logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
     logger.handlers.clear()
 

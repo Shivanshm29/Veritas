@@ -1,5 +1,5 @@
 """
-RFC 9457 / RFC 7807 Problem Details Schema for PRAMAAN.
+RFC 9457 / RFC 7807 Problem Details Schema for Veritas.
 """
 
 from datetime import datetime, timezone
@@ -15,7 +15,7 @@ class InvalidParam(BaseModel):
 class ProblemDetail(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    type: str = Field(default="https://pramaan.org/errors/INTERNAL_ERROR")
+    type: str = Field(default="https://veritas.org/errors/INTERNAL_ERROR")
     title: str = Field(..., description="Short, human-readable summary of the problem type")
     status: int = Field(..., description="HTTP status code")
     detail: Optional[str] = Field(None, description="Human-readable explanation specific to this occurrence")

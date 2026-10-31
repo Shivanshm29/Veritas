@@ -13,7 +13,7 @@ def test_root_health_endpoint(client):
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["status"] == "healthy"
-    assert data["service"] == "PRAMAAN Core Backend"
+    assert data["service"] == "Veritas Core Backend"
     assert "version" in data
     assert "timestamp" in data
 

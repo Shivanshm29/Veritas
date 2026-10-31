@@ -1,5 +1,5 @@
 """
-SQLAlchemy Declarative Base for PRAMAAN.
+SQLAlchemy Declarative Base for Veritas.
 """
 
 from sqlalchemy.orm import declarative_base

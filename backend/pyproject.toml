@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pramaan-backend"
+name = "veritas-backend"
 version = "0.1.0"
-description = "PRAMAAN Backend Services"
+description = "Veritas Backend Services"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

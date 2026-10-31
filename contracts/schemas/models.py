@@ -234,7 +234,7 @@ class ActorRole(str, Enum):
 # 3. BASE CONFIGURATION MODEL
 # ==============================================================================
 
-class PramaanBaseModel(BaseModel):
+class VeritasBaseModel(BaseModel):
     """Base model enforcing JSON snake_case and strict validation rules."""
     model_config = ConfigDict(
         populate_by_name=True,
@@ -244,11 +244,15 @@ class PramaanBaseModel(BaseModel):
     )
 
 
+# Backward-compatibility alias
+PramaanBaseModel = VeritasBaseModel
+
+
 # ==============================================================================
 # 4. SHARED CANONICAL DATA MODELS
 # ==============================================================================
 
-class Investigation(PramaanBaseModel):
+class Investigation(VeritasBaseModel):
     """Model 1: Top-level investigation grouping evidence and claims."""
     id: str = Field(..., description="ID with format inv_<uuid4>")
     title: str = Field(..., min_length=1, max_length=255)

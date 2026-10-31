@@ -1,5 +1,5 @@
 """
-Database session management and connection diagnostics for PRAMAAN.
+Database session management and connection diagnostics for Veritas.
 """
 
 from typing import Any, Dict, Generator
