@@ -33,4 +33,3 @@ jobs:
       - name: Run Phase 0 Pytest Battery
         run: |
           pytest tests backend/tests workers/tests -v --durations=10
-
