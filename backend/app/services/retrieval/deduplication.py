@@ -8,20 +8,18 @@ duplicate coverage from falsely magnifying independent evidentiary corroboration
 from dataclasses import dataclass, field
 import hashlib
 import re
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 
 @dataclass
 class DeduplicatedItem:
     item_id: str
     is_duplicate: bool
-    duplicate_of_id: Optional_str = None
+    duplicate_of_id: Optional[str] = None
     similarity_score: float = 0.0
     reason: str = "Unique"
 
 
-# Typing helper
-Optional_str = str | None
 
 
 class EvidenceDeduplicator:
