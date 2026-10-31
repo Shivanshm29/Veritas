@@ -122,15 +122,22 @@ class AssessabilityClassifier:
         words = [w for w in words if w]
 
         # 1. Greeting & conversational pleasantry check (e.g. "Good morning everyone!", "Hello folks", "Namaste")
-        for grt in cls.GREETINGS_AND_FRAGMENTS:
-            if grt in lower:
-                grt_words = set(grt.split())
-                non_greeting_words = [
-                    w for w in words
-                    if w not in grt_words and w not in {"everyone", "all", "folks", "friends", "there", "to", "day", "today"}
-                ]
-                if len(non_greeting_words) <= 1 and not any(ch.isdigit() for ch in stripped):
-                    return (StatementType.INCOMPLETE_OR_FRAGMENT, 0.90, f"Greeting or conversational pleasantry: '{grt}'")
+        matching_greetings = [grt for grt in cls.GREETINGS_AND_FRAGMENTS if grt in lower]
+        if matching_greetings:
+            greeting_words = set()
+            for grt in matching_greetings:
+                greeting_words.update(grt.split())
+            conversational_tokens = greeting_words | {
+                "everyone", "all", "folks", "friends", "there", "to", "day", "today",
+                "tuning", "in", "joining", "us", "welcome", "viewers", "listeners",
+            }
+            non_greeting_words = [w for w in words if w not in conversational_tokens]
+            if len(non_greeting_words) <= 1 and not any(ch.isdigit() for ch in stripped):
+                return (
+                    StatementType.INCOMPLETE_OR_FRAGMENT,
+                    0.90,
+                    f"Greeting or conversational pleasantry: '{matching_greetings[0]}'",
+                )
 
         # 2. Fragment / length checks
         if len(words) < 3:

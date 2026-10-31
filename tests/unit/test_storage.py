@@ -10,7 +10,7 @@ import pytest
 from fastapi import UploadFile
 from starlette.datastructures import Headers
 
-from backend.app.core.errors import PayloadTooLargeError, EmptyFileError
+from backend.app.core.errors import PayloadTooLargeError, EmptyFileError, InvalidAssetError
 from backend.app.services.storage import LocalFileStorageService
 
 
@@ -86,6 +86,33 @@ async def test_path_traversal_sanitized(temp_storage):
     assert res.original_filename == "secret.png"
     assert res.file_path.name.endswith("_secret.png")
     assert res.file_path.parent == storage_dir
+
+
+@pytest.mark.asyncio
+async def test_path_traversal_windows_style_sanitized(temp_storage):
+    service, storage_dir = temp_storage
+    png_data = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR" + b"\x00" * 50
+    upload = make_upload_file(r"..\..\windows\system32\secret.png", png_data, "image/png")
+
+    res = await service.save_upload(upload, asset_id="ast_22222222-3333-4444-8555-666666666666")
+
+    assert res.original_filename == "secret.png"
+    assert res.file_path.name.endswith("_secret.png")
+    assert res.file_path.parent == storage_dir
+
+
+@pytest.mark.asyncio
+async def test_storage_defense_in_depth_confinement(temp_storage, monkeypatch):
+    """Verifies that storage layer traps path traversal even if sanitizer is bypassed."""
+    service, storage_dir = temp_storage
+    png_data = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR" + b"\x00" * 50
+    upload = make_upload_file("harmless.png", png_data, "image/png")
+
+    # Simulate hypothetical sanitizer failure attempting directory escape
+    monkeypatch.setattr("backend.app.services.storage.sanitize_filename", lambda _: "../../../escaped.png")
+
+    with pytest.raises(InvalidAssetError, match="Storage path traversal detected"):
+        await service.save_upload(upload, asset_id="ast_33333333-4444-5555-8666-777777777777")
 
 
 @pytest.mark.asyncio

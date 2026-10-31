@@ -19,6 +19,18 @@ def test_sanitize_filename_traversal():
     assert sanitize_filename("/var/log/syslog.log") == "syslog.log"
 
 
+def test_sanitize_filename_cross_platform_matrix():
+    """Verifies mixed, UNC, absolute, and relative traversal patterns across OS conventions."""
+    assert sanitize_filename(r"folder/sub\file.jpg") == "file.jpg"
+    assert sanitize_filename(r"\\network-share\volume\report.pdf") == "report.pdf"
+    assert sanitize_filename("D:data.csv") == "data.csv"
+    assert sanitize_filename("/etc/shadow") == "shadow"
+    assert sanitize_filename(r"..\..\..\..\..\..\etc\hosts") == "hosts"
+    assert sanitize_filename("simple_photo.png") == "simple_photo.png"
+    assert sanitize_filename("..\\..\\..\\..\\") == "unnamed_asset"
+    assert sanitize_filename("../../../../") == "unnamed_asset"
+
+
 def test_sanitize_filename_null_byte_and_special_chars():
     """Verifies null bytes and invalid characters are sanitized."""
     assert sanitize_filename("test\x00file.jpg") == "testfile.jpg"

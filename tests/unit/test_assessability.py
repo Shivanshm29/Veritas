@@ -80,3 +80,12 @@ def test_extract_entities():
     assert any("Ministry of Finance" in e for e in entities)
     assert any("15 billion" in e or "$15 billion" in e for e in entities)
     assert any("2026" in e or "October 25, 2026" in e for e in entities)
+
+
+def test_classify_conversational_greeting_with_temporal_filler():
+    # Regression test for conversational broadcast greeting false-positive
+    stmt = "Hello good morning to everyone tuning in today!"
+    stmt_type, conf, reason = AssessabilityClassifier.classify_statement(stmt)
+    assert stmt_type == StatementType.INCOMPLETE_OR_FRAGMENT
+    assert conf >= 0.85
+    assert "greeting" in reason.lower()
